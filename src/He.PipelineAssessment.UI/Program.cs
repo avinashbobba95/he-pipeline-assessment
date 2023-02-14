@@ -25,33 +25,30 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 var pipelineAssessmentConnectionString = builder.Configuration.GetConnectionString("SqlDatabase");
 
- string auth0AppClientId = builder.Configuration["Auth0Config:Auth0AppClientId"];
- string auth0AppClientSecret = builder.Configuration["Auth0Config:Auth0AppClientSecret"];
- string auth0Domain = builder.Configuration["Auth0Config:identity-dev-homesengland.eu.auth0.com"];
-
-//#if HE_LIB
-
-var heIdentityConfiguration = new HeIdentityCookieConfiguration
-{
-    Domain = auth0Domain,
-    ClientId = auth0AppClientId,
-    ClientSecret = auth0AppClientSecret,
-    SupportEmail = "foo@bar.com"
-};
+ string auth0AppClientId = builder.Configuration["Auth0Config:ClientId"];
+ string auth0AppClientSecret = builder.Configuration["Auth0Config:ClientSecret"];
+ string auth0Domain = builder.Configuration["Auth0Config:Domain"];
+ string identifier = builder.Configuration["Auth0Config:Identifier"];
 
 var auth0Config = new Auth0Config(auth0Domain,
     auth0AppClientId,
     auth0AppClientSecret);
+//#if HE_LIB
 
+var heIdentityConfiguration = new HeIdentityCookieConfiguration
+{
+    Domain = auth0Config.Domain,
+    ClientId = auth0Config.ClientId,
+    ClientSecret = auth0Config.ClientSecret,
+    SupportEmail = "foo@bar.com"};
 
 var auth0ManagementConfig = new Auth0ManagementConfig(
-    auth0Domain,
-    auth0AppClientId,
-    auth0AppClientSecret,
-    "https://identity-dev-homesengland.eu.auth0.com/api/v2/",
+    auth0Config.Domain,
+    auth0Config.ClientId,
+    auth0Config.ClientSecret,
+    identifier,
     "???");
 
 var env = builder.Environment;
@@ -62,21 +59,6 @@ builder.Services.ConfigureIdentityManagementService(x => x.UseAuth0(auth0Config,
 
 builder.Services.ConfigureHeCookieSettings(mvcBuilder,
     configure => { configure.WithAspNetCore().WithHeIdentity().WithApplicationInsights(); });
-
-
-
-//builder.Services.AddAuthorization(options =>
-//{
-//    options.AddPolicy(AuthorizationPolicies.AssignmentToPipelineAssessorRoleRequired, policy => policy.RequireRole(AppRole.PipelineAssessor));
-//    options.AddPolicy(AuthorizationPolicies.AssignmentToPipelineAdminRoleRequired, policy => policy.RequireRole(AppRole.PipelineAdmin));
-//});
-
-//public static class AuthorizationPolicies
-//{
-//    public const string AssignmentToPipelineAssessorRoleRequired = "AssignmentToPipelineAssessorRoleRequired";
-//    public const string AssignmentToPipelineAdminRoleRequired = "AssignmentToPipelineAdminRoleRequired";
-//}
-
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
