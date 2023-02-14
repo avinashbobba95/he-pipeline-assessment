@@ -8,10 +8,12 @@ using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Queries.GetAssessmentTools;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Queries.GetAssessmentToolWorkflows;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace He.PipelineAssessment.UI.Features.Admin.Controllers
 {
+    [Authorize]
     public class AdminController : BaseController<AdminController>
     {
         private readonly IValidator<CreateAssessmentToolCommand> _createAssessmentToolCommandValidator;

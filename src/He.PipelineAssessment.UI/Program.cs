@@ -1,6 +1,8 @@
 using Elsa.CustomWorkflow.Sdk.Extensions;
 using Elsa.CustomWorkflow.Sdk.HttpClients;
 using FluentValidation;
+using He.Identity.Auth0;
+using He.Identity.Mvc;
 using He.PipelineAssessment.Data.Auth;
 using He.PipelineAssessment.Data.SinglePipeline;
 using He.PipelineAssessment.Infrastructure.Data;
@@ -25,6 +27,56 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 var pipelineAssessmentConnectionString = builder.Configuration.GetConnectionString("SqlDatabase");
+
+const string auth0AppClientId = "Acn7lcjNGIrNzHMwXY76bN19R2VYeDzT";
+const string auth0AppClientSecret = "Q5PEvIr0Lls45wVu-kljGVQuasmnglFZUynumbbG7RAlF-yIDbVy4jdW4cNj7HG4";
+const string auth0Domain = "identity-dev-homesengland.eu.auth0.com";
+
+//#if HE_LIB
+
+var heIdentityConfiguration = new HeIdentityCookieConfiguration
+{
+    Domain = auth0Domain,
+    ClientId = auth0AppClientId,
+    ClientSecret = auth0AppClientSecret,
+    SupportEmail = "foo@bar.com"
+};
+
+var auth0Config = new Auth0Config(auth0Domain,
+    auth0AppClientId,
+    auth0AppClientSecret);
+
+
+var auth0ManagementConfig = new Auth0ManagementConfig(
+    auth0Domain,
+    auth0AppClientId,
+    auth0AppClientSecret,
+    "https://identity-dev-homesengland.eu.auth0.com/api/v2/",
+    "???");
+
+var env = builder.Environment;
+var mvcBuilder = builder.Services.AddControllersWithViews().AddHeIdentityCookieAuth(heIdentityConfiguration, env);
+
+builder.Services.AddSingleton<HttpClient>();
+builder.Services.ConfigureIdentityManagementService(x => x.UseAuth0(auth0Config, auth0ManagementConfig));
+
+builder.Services.ConfigureHeCookieSettings(mvcBuilder,
+    configure => { configure.WithAspNetCore().WithHeIdentity().WithApplicationInsights(); });
+
+
+
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy(AuthorizationPolicies.AssignmentToPipelineAssessorRoleRequired, policy => policy.RequireRole(AppRole.PipelineAssessor));
+//    options.AddPolicy(AuthorizationPolicies.AssignmentToPipelineAdminRoleRequired, policy => policy.RequireRole(AppRole.PipelineAdmin));
+//});
+
+//public static class AuthorizationPolicies
+//{
+//    public const string AssignmentToPipelineAssessorRoleRequired = "AssignmentToPipelineAssessorRoleRequired";
+//    public const string AssignmentToPipelineAdminRoleRequired = "AssignmentToPipelineAdminRoleRequired";
+//}
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -94,6 +146,13 @@ builder.Services.AddOptions<IdentityClientConfig>()
 builder.Services.AddSinglePipelineClient(builder.Configuration, builder.Environment.IsDevelopment());
 
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(AuthorizationPolicies.AssignmentToPipelineAssessorRoleRequired, policy => policy.RequireRole(AppRole.PipelineAssessor));
+    options.AddPolicy(AuthorizationPolicies.AssignmentToPipelineAdminRoleRequired, policy => policy.RequireRole(AppRole.PipelineAdmin));
+});
+
+
 var app = builder.Build();
 
 
@@ -121,6 +180,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -128,3 +189,16 @@ app.MapControllerRoute(
     pattern: "{controller=Assessment}/{action=Index}/{id?}");
 
 app.Run();
+
+public static class AppRole
+{
+
+    public const string PipelineAdmin = "Pipeline.Admin";
+    public const string PipelineAssessor = "Pipeline.Assessor";
+}
+
+public static class AuthorizationPolicies
+{
+    public const string AssignmentToPipelineAssessorRoleRequired = "AssignmentToPipelineAssessorRoleRequired";
+    public const string AssignmentToPipelineAdminRoleRequired = "AssignmentToPipelineAdminRoleRequired";
+}
