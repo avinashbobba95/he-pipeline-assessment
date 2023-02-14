@@ -28,9 +28,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 var pipelineAssessmentConnectionString = builder.Configuration.GetConnectionString("SqlDatabase");
 
-const string auth0AppClientId = "Acn7lcjNGIrNzHMwXY76bN19R2VYeDzT";
-const string auth0AppClientSecret = "Q5PEvIr0Lls45wVu-kljGVQuasmnglFZUynumbbG7RAlF-yIDbVy4jdW4cNj7HG4";
-const string auth0Domain = "identity-dev-homesengland.eu.auth0.com";
+ string auth0AppClientId = builder.Configuration["Auth0Config:Auth0AppClientId"];
+ string auth0AppClientSecret = builder.Configuration["Auth0Config:Auth0AppClientSecret"];
+ string auth0Domain = builder.Configuration["Auth0Config:identity-dev-homesengland.eu.auth0.com"];
 
 //#if HE_LIB
 
