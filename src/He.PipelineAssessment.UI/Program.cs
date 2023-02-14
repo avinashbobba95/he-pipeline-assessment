@@ -30,28 +30,31 @@ var builder = WebApplication.CreateBuilder(args);
 var pipelineAssessmentConnectionString = builder.Configuration.GetConnectionString("SqlDatabase");
 
  string auth0AppClientId = builder.Configuration["Auth0Config:ClientId"];
+
  string auth0AppClientSecret = builder.Configuration["Auth0Config:ClientSecret"];
+
  string auth0Domain = builder.Configuration["Auth0Config:Domain"];
+
  string identifier = builder.Configuration["Auth0Config:Identifier"];
 
-var auth0Config = new Auth0Config(auth0Domain,
-    auth0AppClientId,
-    auth0AppClientSecret);
-//#if HE_LIB
+string supportEmail = builder.Configuration["Auth0Config:SupportEmail"];
+
+var auth0Config = new Auth0Config(auth0Domain, auth0AppClientId, auth0AppClientSecret);
 
 var heIdentityConfiguration = new HeIdentityCookieConfiguration
 {
     Domain = auth0Config.Domain,
     ClientId = auth0Config.ClientId,
     ClientSecret = auth0Config.ClientSecret,
-    SupportEmail = "foo@bar.com"};
+    SupportEmail = supportEmail
+};
 
 var auth0ManagementConfig = new Auth0ManagementConfig(
-    auth0Config.Domain,
-    auth0Config.ClientId,
-    auth0Config.ClientSecret,
-    identifier,
-    "???");
+                            auth0Config.Domain,
+                            auth0Config.ClientId,
+                            auth0Config.ClientSecret,
+                            identifier,
+                            "???");
 
 var env = builder.Environment;
 var mvcBuilder = builder.Services.AddControllersWithViews().AddHeIdentityCookieAuth(heIdentityConfiguration, env);
@@ -116,8 +119,6 @@ builder.Services.AddScoped<IAdminAssessmentToolRepository, AdminAssessmentToolRe
 builder.Services.AddScoped<IAdminAssessmentToolWorkflowRepository, AdminAssessmentToolWorkflowRepository>();
 builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 builder.Services.AddScoped<ISyncCommandHandlerHelper, SyncCommandHandlerHelper>();
-
-
 builder.Services.AddScoped<IIdentityClient, IdentityClient>();
 builder.Services.AddTransient<BearerTokenHandler>();
 
@@ -129,27 +130,27 @@ builder.Services.AddOptions<IdentityClientConfig>()
 
 builder.Services.AddSinglePipelineClient(builder.Configuration, builder.Environment.IsDevelopment());
 
-
 builder.Services.AddAuthorization(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();
-    // options.AddPolicy(AuthorizationPolicies.AssignmentToPipelineAssessorRoleRequired, policy => policy.RequireRole(AppRole.PipelineAssessor));
-    //options.AddPolicy(AuthorizationPolicies.AssignmentToPipelineAdminRoleRequired, policy => policy.RequireRole(AppRole.PipelineAdmin));
+
+     options.AddPolicy(AuthorizationPolicies.AssignmentToPipelineAssessorRoleRequired, policy => policy.RequireRole(AppRole.PipelineAssessor));
+
+     options.AddPolicy(AuthorizationPolicies.AssignmentToPipelineAdminRoleRequired, policy => policy.RequireRole(AppRole.PipelineAdmin));
 });
+
 builder.Services.AddControllers(config =>
 {
     var policy = new AuthorizationPolicyBuilder()
                      .RequireAuthenticatedUser()
                      .Build();
+
     config.Filters.Add(new AuthorizeFilter(policy));
 });
 
 var app = builder.Build();
-
-
-
 
 if (app.Environment.IsDevelopment())
 {
