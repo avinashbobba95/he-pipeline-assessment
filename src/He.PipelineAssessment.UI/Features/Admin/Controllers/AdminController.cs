@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace He.PipelineAssessment.UI.Features.Admin.Controllers
 {
-    [Authorize]
+    
     public class AdminController : BaseController<AdminController>
     {
         private readonly IValidator<CreateAssessmentToolCommand> _createAssessmentToolCommandValidator;
