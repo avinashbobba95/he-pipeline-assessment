@@ -4,16 +4,9 @@ using He.PipelineAssessment.Infrastructure.Repository;
 using He.PipelineAssessment.Models;
 using He.PipelineAssessment.UI.Common.Exceptions;
 using He.PipelineAssessment.UI.Common.Utility;
-using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.DeleteAssessmentTool;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.UpdateAssessmentTool;
-using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.UpdateAssessmentToolWorkflowCommand;
 using MediatR;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace He.PipelineAssessment.UI.Tests.Features.Admin.AssessmentToolManagement.Commands
@@ -78,7 +71,6 @@ namespace He.PipelineAssessment.UI.Tests.Features.Admin.AssessmentToolManagement
         public async Task Handle_ThrowException_GivenAssessmentToolNotFound
         (
              [Frozen] Mock<IAdminAssessmentToolRepository> adminAssessmentToolRepository,
-             Exception exception,
              UpdateAssessmentToolCommand updateAssessmentToolCommand,
              UpdateAssessmentToolCommandHandler sut
         )
