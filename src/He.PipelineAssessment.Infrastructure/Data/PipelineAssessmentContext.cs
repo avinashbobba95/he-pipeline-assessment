@@ -7,6 +7,11 @@ namespace He.PipelineAssessment.Infrastructure.Data
 {
     public class PipelineAssessmentContext : DbContext, IDataProtectionKeyContext
     {
+        public PipelineAssessmentContext()
+        {
+
+        }
+
         public PipelineAssessmentContext(DbContextOptions<PipelineAssessmentContext> options) : base(options)
         {
 
