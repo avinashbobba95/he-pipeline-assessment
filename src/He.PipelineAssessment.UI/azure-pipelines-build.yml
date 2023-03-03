@@ -23,9 +23,6 @@ resources:
       type: git
       name: "Cloud Hosting Service/Templates"
       ref: "feature/merge-changes-from-pipasmt"
-    - repository: original-templates
-      type: git
-      name: "Cloud Hosting Service/Templates"
 
 stages:
   - template: azure-pipelines-build.yml@pipeline-assessment-deployment
