@@ -1,5 +1,6 @@
 ﻿using Elsa.CustomWorkflow.Sdk.HttpClients;
 using Elsa.CustomWorkflow.Sdk.Models.Workflow;
+using He.PipelineAssessment.Infrastructure;
 using He.PipelineAssessment.Infrastructure.Repository;
 using MediatR;
 
@@ -9,10 +10,14 @@ namespace He.PipelineAssessment.UI.Features.Workflow.CheckYourAnswersSaveAndCont
     {
         private readonly IElsaServerHttpClient _elsaServerHttpClient;
         private readonly IAssessmentRepository _assessmentRepository;
-        public CheckYourAnswersSaveAndContinueCommandHandler(IElsaServerHttpClient elsaServerHttpClient, IAssessmentRepository assessmentRepository)
+        private readonly IUserProvider _userProvider;
+        public CheckYourAnswersSaveAndContinueCommandHandler(IElsaServerHttpClient elsaServerHttpClient,
+                                                              IAssessmentRepository assessmentRepository,
+                                                              IUserProvider userProvider)
         {
             _elsaServerHttpClient = elsaServerHttpClient;
             _assessmentRepository = assessmentRepository;
+            _userProvider = userProvider;
         }
 
         public async Task<CheckYourAnswersSaveAndContinueCommandResponse?> Handle(CheckYourAnswersSaveAndContinueCommand request, CancellationToken cancellationToken)
@@ -28,12 +33,13 @@ namespace He.PipelineAssessment.UI.Features.Workflow.CheckYourAnswersSaveAndCont
                 var currentAssessmentToolWorkflowInstance = await _assessmentRepository.GetAssessmentToolWorkflowInstance(response.Data.WorkflowInstanceId);
                 if (currentAssessmentToolWorkflowInstance != null && currentAssessmentToolWorkflowInstance.Status != AssessmentStageConstants.Submitted)
                 {
+
                     var submittedTime = DateTime.UtcNow;
                     currentAssessmentToolWorkflowInstance.Status = AssessmentStageConstants.Submitted;
                     currentAssessmentToolWorkflowInstance.SubmittedDateTime = submittedTime;
                     currentAssessmentToolWorkflowInstance.CurrentActivityId = response.Data.NextActivityId;
                     currentAssessmentToolWorkflowInstance.CurrentActivityType = response.Data.ActivityType;
-                    currentAssessmentToolWorkflowInstance.LastModifiedDateTime = submittedTime;
+                    currentAssessmentToolWorkflowInstance.SubmittedBy = _userProvider.GetUserName();
                     await _assessmentRepository.SaveChanges();
 
                     CheckYourAnswersSaveAndContinueCommandResponse result = new CheckYourAnswersSaveAndContinueCommandResponse()

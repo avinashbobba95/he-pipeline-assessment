@@ -1,7 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using Elsa.CustomWorkflow.Sdk.HttpClients;
 using Elsa.CustomWorkflow.Sdk.Models.Workflow;
-using He.PipelineAssessment.Common.Tests;
+using He.PipelineAssessment.Tests.Common;
 using Moq;
 using System.Net;
 using Xunit;
@@ -287,6 +287,29 @@ namespace Elsa.CustomWorkflow.Sdk.Tests.HttpClients
             //Assert
             Assert.NotNull(result);
             Assert.IsType<WorkflowActivityDataDto>(result);
+        }
+
+        [Theory]
+        [AutoMoqData]
+        public async Task LoadCustomActivities_ReturnsCustomActivity_GivenHttpClientGivesBackNonSuccessResponse(
+          [Frozen] Mock<IHttpClientFactory> httpClientFactoryMock,
+          [Frozen] Mock<HttpMessageHandler> httpMessageHandlerMock,
+          string elsaServer,
+          WorkflowNextActivityDataDto workflowNextActivityDataDto,
+          ElsaServerHttpClient sut)
+        {
+            //Arrange
+            HttpClientTestHelpers.SetupHttpClientWithExpectedStatusCode(workflowNextActivityDataDto,
+                HttpStatusCode.OK,
+                httpClientFactoryMock,
+                httpMessageHandlerMock);
+
+            //Act
+            var result = await sut.LoadCustomActivities(elsaServer);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<string>(result);
         }
     }
 }

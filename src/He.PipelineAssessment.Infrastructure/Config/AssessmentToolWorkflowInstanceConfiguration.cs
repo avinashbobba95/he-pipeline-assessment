@@ -8,6 +8,7 @@ namespace He.PipelineAssessment.Infrastructure.Config
     {
         public void Configure(EntityTypeBuilder<AssessmentToolWorkflowInstance> builder)
         {
+            builder.ToTable(x => x.IsTemporal());
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.WorkflowDefinitionId)
@@ -31,6 +32,18 @@ namespace He.PipelineAssessment.Infrastructure.Config
             builder.HasOne(x => x.Assessment)
                 .WithMany(x => x.AssessmentToolWorkflowInstances)
                 .HasForeignKey(x => x.AssessmentId);
+
+            builder.Property(x => x.Result)
+               .HasMaxLength(100);
+
+            builder.Property(x => x.SubmittedBy)
+               .HasMaxLength(250);
+
+            builder.Property(x => x.CreatedBy)
+               .HasMaxLength(EntityConfigurationConstants.MaxLength);
+
+            builder.Property(x => x.LastModifiedBy)
+                .HasMaxLength(EntityConfigurationConstants.MaxLength);
         }
     }
 }
