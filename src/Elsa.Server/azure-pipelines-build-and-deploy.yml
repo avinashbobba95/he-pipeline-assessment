@@ -17,7 +17,7 @@ resources:
   - repository: he-workflow
     type: git
     name: 'Common Components (Agile Board)/He.Workflow'   
-    ref: 'main'
+    ref: "test/pipeline"
   - repository: templates
     type: git
     name: 'Pipeline Assessment/Templates'   

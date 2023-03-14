@@ -14,11 +14,11 @@ resources:
   - repository: he-workflow
     type: git
     name: 'Common Components (Agile Board)/He.Workflow'   
-    ref: 'main'
+    ref: "test/pipeline"
   - repository: templates
     type: git
-    name: 'Pipeline Assessment/Templates'   
-    ref: 'master'
+    name: "Cloud Hosting Service/Templates"
+    ref: "feature/merge-changes-from-pipasmt"
 
 stages:
 - template: azure-pipelines-build.yml@he-workflow
