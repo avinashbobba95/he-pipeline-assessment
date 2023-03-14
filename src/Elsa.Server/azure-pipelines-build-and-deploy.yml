@@ -20,8 +20,8 @@ resources:
     ref: "test/pipeline"
   - repository: templates
     type: git
-    name: 'Pipeline Assessment/Templates'   
-    ref: 'master'
+    name: "Cloud Hosting Service/Templates"
+    ref: "feature/merge-changes-from-pipasmt"
 
 stages:
 - template: azure-pipelines-build-and-deploy.yml@he-workflow
