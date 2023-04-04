@@ -117,6 +117,9 @@ builder.Services.AddOptions<IdentityClientConfig>()
     configuration.GetSection("IdentityClientConfig").Bind(settings);
 });
 
+builder.AddCustomAuth0Configuration();
+builder.Services.AddCustomAuthentication();
+
 builder.Services.AddEsriHttpClients(builder.Configuration, builder.Environment.IsDevelopment());
 
 var app = builder.Build();
@@ -133,6 +136,8 @@ app
     .UseHttpsRedirection()
     .UseStaticFiles() // For Dashboard.
     .UseRouting()
+    .UseAuthentication()
+    .UseAuthorization()
     .UseEndpoints(endpoints =>
     {
         // Elsa API Endpoints are implemented as regular ASP.NET Core API controllers.
