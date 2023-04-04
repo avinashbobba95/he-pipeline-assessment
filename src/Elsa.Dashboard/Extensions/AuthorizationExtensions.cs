@@ -3,6 +3,7 @@ namespace Elsa.CustomInfrastructure.Extensions
   using Elsa.Dashboard.Authorization;
   using He.Identity.Auth0;
   using He.Identity.Mvc;
+  using Microsoft.AspNetCore.Authentication.JwtBearer;
   using Microsoft.AspNetCore.Authorization;
   using Microsoft.AspNetCore.Builder;
   using Microsoft.Extensions.DependencyInjection;
@@ -49,6 +50,13 @@ namespace Elsa.CustomInfrastructure.Extensions
 
     public static void AddCustomAuthentication(this IServiceCollection services)
     {
+
+      // ConfigureServices:
+      services
+          .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+          .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {});
+
+
       services.AddAuthorization(options =>
       {
         options.DefaultPolicy = new AuthorizationPolicyBuilder().RequireRole(Constants.AppRole.ElsaDashboardAdmin).Build();
