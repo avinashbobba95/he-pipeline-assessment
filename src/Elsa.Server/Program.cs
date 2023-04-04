@@ -70,17 +70,17 @@ builder.Services.AddDataProtection().PersistKeysToDbContext<ElsaCustomContext>()
 // Elsa API endpoints.
 builder.Services.AddElsaApiEndpoints();
 
-//builder.Services.AddAuthentication(options =>
-//{
-////    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//})
-//.AddCookie()
-////.AddJwtBearer(options =>
-// {
-//     options.Authority = "https://identity-dev-homesengland.eu.auth0.com/";
-//     options.Audience = "https://elsa-server-api";
-// });
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddJwtBearer(options =>
+ {
+     options.Authority = "https://identity-dev-homesengland.eu.auth0.com/";
+     options.Audience = "https://elsa-server-api";
+ });
 
 //builder.Services.AddAuthorization();
 
