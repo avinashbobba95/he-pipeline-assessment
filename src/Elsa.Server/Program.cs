@@ -25,6 +25,9 @@ using Elsa.Server.Services;
 using Elsa.Server.StartupTasks;
 using He.PipelineAssessment.Data.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -119,6 +122,20 @@ builder.Services.AddOptions<IdentityClientConfig>()
 
 builder.Services.AddEsriHttpClients(builder.Configuration, builder.Environment.IsDevelopment());
 
+//builder.Services.AddDataProtection()
+//    .PersistKeysToFileSystem(new DirectoryInfo(@"c:\HomesEngland\Development\SourceCode\Shared"))
+//    .SetApplicationName("SharedCookieApp");
+
+//builder.Services.AddAuthentication("Identity.Application")
+//    .AddCookie("", options =>
+//    {
+//        options.Cookie.Name = ".AspNet.SharedCookie";
+//    });
+
+
+builder.AddCustomAuth0Configuration();
+builder.Services.AddCustomAuthentication();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -128,11 +145,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+var cookiePolicyOptions = new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict,
+};
+
 app
     .UseCors()
     .UseHttpsRedirection()
     .UseStaticFiles() // For Dashboard.
     .UseRouting()
+    .UseAuthentication()
+    .UseAuthorization()
     .UseEndpoints(endpoints =>
     {
         // Elsa API Endpoints are implemented as regular ASP.NET Core API controllers.

@@ -3,8 +3,10 @@ using Elsa.CustomInfrastructure.Extensions;
 using Elsa.CustomWorkflow.Sdk.HttpClients;
 using Elsa.Dashboard;
 using Elsa.Dashboard.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,16 @@ builder.Services.AddScoped<IElsaServerHttpClient, ElsaServerHttpClient>();
 // For Authentication
 builder.AddCustomAuth0Configuration();
 builder.Services.AddCustomAuthentication();
+
+
+//builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(@"c:\HomesEngland\Development\SourceCode\Shared"))
+//  .SetApplicationName("SharedCookieApp");
+
+//builder.Services.AddAuthentication("Identity.Application")
+//    .AddCookie("", options =>
+//    {
+//      options.Cookie.Name = ".AspNet.SharedCookie";
+//    });
 
 var app = builder.Build();
 

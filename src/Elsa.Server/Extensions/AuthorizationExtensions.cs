@@ -1,7 +1,7 @@
-namespace Elsa.CustomInfrastructure.Extensions
+namespace Elsa.Server.Extensions
 {
-  using Elsa.Dashboard.Authorization;
-  using He.Identity.Auth0;
+    using Elsa.Server.Authorization;
+    using He.Identity.Auth0;
   using He.Identity.Mvc;
   using Microsoft.AspNetCore.Authorization;
   using Microsoft.AspNetCore.Builder;
@@ -57,24 +57,6 @@ namespace Elsa.CustomInfrastructure.Extensions
                   .RequireAuthenticatedUser()
                   .Build();
       });
-    }
-
-    public static DirectoryInfo GetKyRingDirectoryInfo(this WebApplicationBuilder builder)
-    {
-      string applicationBasePath = System.AppContext.BaseDirectory;
-      DirectoryInfo directoryInof = new DirectoryInfo(applicationBasePath);
-      string keyRingPath = builder.Configuration.GetSection("AppKeys").GetValue<string>("keyRingPath");
-      do
-      {
-        directoryInof = directoryInof.Parent;
-        DirectoryInfo keyRingDirectoryInfo = new DirectoryInfo($"{directoryInof.FullName}{keyRingPath}");
-        if (keyRingDirectoryInfo.Exists)
-        {
-          return keyRingDirectoryInfo;
-        }
-      }
-      while (directoryInof.Parent != null);
-      throw new Exception($"key ring path not found");
     }
   }
 }
