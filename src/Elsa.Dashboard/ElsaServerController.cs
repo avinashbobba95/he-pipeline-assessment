@@ -43,10 +43,20 @@ namespace Elsa.Dashboard
       options);
       var responseBody = await response.Content.ReadAsStringAsync();
       var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(responseBody, options);
-      var token = tokenResponse?.AccessToken;
 
+      var bearerToken = tokenResponse?.AccessToken;
+      var baseUrl = "https://localhost:7227";
+      var restRequest = new RestRequest("workflow/StartWorkflow", Method.Post);
+      restRequest.AddHeader("authorization", $"Bearer {bearerToken}");
+      var restClient = new RestClient(baseUrl);
+      var result = await restClient.GetAsync(restRequest);
       Console.WriteLine("I am in the controller");
       return Ok();
+    }
+
+    public class TokenResponse
+    {
+      public string AccessToken { get; set; }
     }
 
 
