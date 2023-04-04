@@ -25,6 +25,7 @@ using Elsa.Server.Services;
 using Elsa.Server.StartupTasks;
 using He.PipelineAssessment.Data.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -68,6 +69,20 @@ builder.Services.AddDataProtection().PersistKeysToDbContext<ElsaCustomContext>()
 
 // Elsa API endpoints.
 builder.Services.AddElsaApiEndpoints();
+
+//builder.Services.AddAuthentication(options =>
+//{
+////    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//})
+//.AddCookie()
+////.AddJwtBearer(options =>
+// {
+//     options.Authority = "https://identity-dev-homesengland.eu.auth0.com/";
+//     options.Audience = "https://elsa-server-api";
+// });
+
+//builder.Services.AddAuthorization();
 
 //Custom method.  Register new Script Handlers here.
 builder.Services.AddCustomElsaScriptHandlers();

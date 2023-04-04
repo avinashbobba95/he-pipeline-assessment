@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -10,8 +10,11 @@
 
   <ItemGroup>
     <PackageReference Include="Elsa.Designer.Components.Web" Version="2.9.3" />
+    <PackageReference Include="IdentityModel" Version="6.0.0" />
+    <PackageReference Include="JorgeSerrano.Json.JsonSnakeCaseNamingPolicy" Version="0.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="6.0.9" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
       <PrivateAssets>all</PrivateAssets>
@@ -19,6 +22,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="RestSharp" Version="110.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +50,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\auth0\auth0-spa-js\dist\auth0-spa-js.development.js" />
+    <None Include="wwwroot\auth0\auth0-spa-js\dist\auth0-spa-js.development.js.map" />
+    <None Include="wwwroot\auth0\auth0-spa-js\dist\auth0-spa-js.production.esm.js" />
+    <None Include="wwwroot\auth0\auth0-spa-js\dist\auth0-spa-js.production.esm.js.map" />
+    <None Include="wwwroot\auth0\auth0-spa-js\dist\auth0-spa-js.production.js" />
+    <None Include="wwwroot\auth0\auth0-spa-js\dist\auth0-spa-js.production.js.map" />
+    <None Include="wwwroot\auth0\auth0-spa-js\dist\lib\auth0-spa-js.cjs.js" />
+    <None Include="wwwroot\auth0\auth0-spa-js\dist\lib\auth0-spa-js.cjs.js.map" />
+    <None Include="wwwroot\auth0\auth0-spa-js\LICENSE" />
+    <None Include="wwwroot\auth0\auth0-spa-js\README.md" />
     <None Include="wwwroot\Scripts\Constants\CustomComponentTags.js" />
     <None Include="wwwroot\Scripts\Constants\CustomPropertyUiHints.js" />
   </ItemGroup>
@@ -74,6 +88,55 @@
     <TypeScriptCompile Include="src\nested-drivers\he-switch-cases-driver.tsx" />
     <TypeScriptCompile Include="src\constants\constants.ts" />
     <TypeScriptCompile Include="src\nested-drivers\display-managers\display-manager.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\api.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\Auth0Client.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\Auth0Client.utils.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\cache\cache-localstorage.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\cache\cache-manager.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\cache\cache-memory.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\cache\index.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\cache\key-manifest.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\cache\shared.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\constants.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\errors.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\global.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\http.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\index.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\jwt.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\promise-utils.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\scope.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\storage.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\transaction-manager.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\utils.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\version.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\worker\token.worker.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\worker\worker.types.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\dist\typings\worker\worker.utils.d.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\api.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\Auth0Client.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\Auth0Client.utils.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\cache\cache-localstorage.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\cache\cache-manager.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\cache\cache-memory.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\cache\index.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\cache\key-manifest.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\cache\shared.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\constants.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\errors.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\global.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\http.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\index.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\jwt.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\promise-utils.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\scope.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\storage.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\transaction-manager.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\utils.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\version.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\worker\token.worker.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\worker\worker.types.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\worker\worker.utils.ts" />
+    <TypeScriptCompile Include="wwwroot\auth0\auth0-spa-js\src\worker\__mocks__\token.worker.ts" />
     <TypeScriptCompile Include="wwwroot\Scripts\CustomElsa.js" />
     <TypeScriptCompile Include="wwwroot\Scripts\Drivers\ConditionalTextListPropertyDriver.js" />
     <TypeScriptCompile Include="wwwroot\Scripts\Drivers\CustomSwitchPropertyDriver.js" />

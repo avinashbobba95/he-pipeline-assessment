@@ -4,11 +4,14 @@ using Elsa.CustomWorkflow.Sdk.HttpClients;
 using Elsa.Dashboard;
 using Elsa.Dashboard.Models;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 var elsaCustomConnectionString = builder.Configuration.GetConnectionString("ElsaCustom");
+
 
 // For Dashboard.
 builder.Services.AddRazorPages();
@@ -77,9 +80,9 @@ app.UseStaticFiles().UseStaticFiles(new StaticFileOptions
   {
     // Elsa API Endpoints are implemented as regular ASP.NET Core API controllers.
     endpoints
-      .MapControllers();
+      .MapControllers(
+      );
     // For Dashboard.
     endpoints.MapFallbackToPage("/_Host");
   });
-
 app.Run();

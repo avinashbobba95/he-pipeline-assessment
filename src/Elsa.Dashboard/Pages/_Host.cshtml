@@ -1,5 +1,6 @@
 @page "/"
 @using Elsa.Dashboard.PageModels
+@using Elsa.Dashboard
 @using Microsoft.Extensions.Configuration
 @model ElsaDashboardLoader
 @inject NonceConfig nonceConfig
@@ -44,6 +45,35 @@
         let customActivities = @Html.Raw(Model.JsonResponse)
         InitCustomElsa(elsaStudioRoot, customActivities)
     </script>
+@*    <script nonce="@nonceConfig.ElsaSetup" type="module">
+        //import {AuthorizationMiddlewarePlugin} from "../Plugins/AuthorizationMiddlewarePlugin";
+        import { Auth0Client, Auth0ClientOptions } from ''
+        const AuthorizationMiddlewarePlugin = function (elsaStudio) {
+            const eventBus = elsaStudio.eventBus;
 
+            eventBus.on('http-client-created', e => {
+                // Register Axios middleware.
+                e.service.register({
+                    onRequest(request) {
+                        request.headers = { 'Authorization': 'Bearer 1234' }
+                        return request;
+                    }
+                });
+            });
+        }
+        const elsaStudioRoot = document.querySelector('elsa-studio-root');
+
+        elsaStudioRoot.addEventListener('initializing', e => {
+            const elsaStudio = e.detail;
+            const options = 
+                      {
+                domain: "https://identity-staging-homesengland.eu.auth0.com/",
+                    client_id: "D4ZLiiwsBq9tMZXbCx2TwBUiNDcsXuIy",
+                        audience: "https://elsa-server-api",
+            };
+            
+            elsaStudio.pluginManager.registerPlugin(AuthorizationMiddlewarePlugin);
+        });
+    </script>*@
 </body>
 </html>
