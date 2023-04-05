@@ -1,4 +1,5 @@
 import { RegisterCustomPlugins } from './Plugins/CustomPlugins.js';
+import { AuthPlugin } from './Plugins/Plugins.js';
 import { CustomPropertyUIHints } from './Constants/CustomPropertyUiHints.js';
 import { CustomComponentTags } from './Constants/CustomComponentTags.js';
 import { QuestionDriver } from './Drivers/QuestionPropertyDriver.js';
@@ -6,13 +7,13 @@ import { CustomSwitchDriver } from './Drivers/CustomSwitchPropertyDriver.js';
 import { CustomTextDriver } from './Drivers/CustomTextPropertyDriver.js';
 import { ConditionalTextListDriver } from './Drivers/ConditionalTextListPropertyDriver.js';
 import { TextActivityDriver } from './Drivers/TextActivityPropertyDriver.js';
-export function InitCustomElsa(elsaStudioRoot, customProperties) {
+
+export function InitCustomElsa(elsaStudioRoot, customProperties, token) {
 
   elsaStudioRoot.addEventListener('initializing', e => {
     var elsaStudio = e.detail;
     RegisterPlugins(elsaStudio);
     RegisterDrivers(elsaStudio, customProperties);
-   // AuthorizationMiddlewarePlugin(elsaStudio);
   });
 
   function RegisterDrivers(elsaStudio, customProperties) {
@@ -35,9 +36,10 @@ export function InitCustomElsa(elsaStudioRoot, customProperties) {
 
   function RegisterPlugins(elsaStudio) {
     elsaStudio.pluginManager.registerPlugin(RegisterCustomPlugins);
+    elsaStudio.pluginManager.registerPlugin(AuthPlugin);
   }
 
-  async function AuthorizationMiddlewarePlugin(elsaStudio){ 
+  async function AuthorizationMiddlewarePlugin(elsaStudio, token){ 
     const eventBus = elsaStudio.eventBus;
     const options = {
       domain: "https://identity-staging-homesengland.eu.auth0.com/",
@@ -54,7 +56,7 @@ export function InitCustomElsa(elsaStudioRoot, customProperties) {
       e.service.register({
         onRequest(request) {
           request.headers = {
-            'Authorization': `Token 1234`
+            'Authorization': `Token ${token}`
           }
 
           return request;

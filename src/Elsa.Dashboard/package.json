@@ -33,6 +33,7 @@
     "@stencil/core": "^2.19.3",
     "@stencil/router": "^1.0.1",
     "@stencil/store": "^1.5.0",
+    "axios": "^1.3.4",
     "construe": "^0.4.1"
   },
   "devDependencies": {

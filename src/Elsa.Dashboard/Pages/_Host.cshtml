@@ -22,13 +22,16 @@
     <script nonce="@nonceConfig.ElsaSetup" type="importmap">
         {
                   "imports": {
-                    "InitCustomElsa": "/Scripts/CustomElsa.js"
+                    "InitCustomElsa": "/Scripts/CustomElsa.js",
+                    "auth0": "/Scripts/auth0/auth0-spa-js/dist/auth0-spa-js.production.esm.js"
                   }
                 }</script>
     <script nonce="@nonceConfig.ElsaSetup" src="/_content/Elsa.Designer.Components.Web/monaco-editor/min/vs/loader.js"></script>
     <script nonce="@nonceConfig.ElsaSetup" type="module" src="/_content/Elsa.Designer.Components.Web/elsa-workflows-studio/elsa-workflows-studio.esm.js"></script>
     <script nonce="@nonceConfig.ElsaSetup" type="module" src="/static/build/custom-elsa.esm.js"></script>
     <script nonce="@nonceConfig.ElsaSetup" type="module" src="/Scripts/CustomElsa.js"></script>
+    <script nonce="@nonceConfig.ElsaSetup" type="module" src="/Scripts/axios/lib/axios.js"></script>
+    <script nonce="@nonceConfig.ElsaSetup" type="module" src="/Scripts/auth0/auth0-spa-js/dist/auth0-spa-js.production.esm.js"></script>
 
     <style>
 
@@ -40,40 +43,12 @@
 </elsa-studio-root>
 
     <script nonce="@nonceConfig.ElsaSetup" type="module">
+       
         import { InitCustomElsa } from "InitCustomElsa"
         var elsaStudioRoot = document.querySelector('elsa-studio-root');
         let customActivities = @Html.Raw(Model.JsonResponse)
-        InitCustomElsa(elsaStudioRoot, customActivities)
+        InitCustomElsa(elsaStudioRoot, customActivities, "1234")
     </script>
-@*    <script nonce="@nonceConfig.ElsaSetup" type="module">
-        //import {AuthorizationMiddlewarePlugin} from "../Plugins/AuthorizationMiddlewarePlugin";
-        import { Auth0Client, Auth0ClientOptions } from ''
-        const AuthorizationMiddlewarePlugin = function (elsaStudio) {
-            const eventBus = elsaStudio.eventBus;
-
-            eventBus.on('http-client-created', e => {
-                // Register Axios middleware.
-                e.service.register({
-                    onRequest(request) {
-                        request.headers = { 'Authorization': 'Bearer 1234' }
-                        return request;
-                    }
-                });
-            });
-        }
-        const elsaStudioRoot = document.querySelector('elsa-studio-root');
-
-        elsaStudioRoot.addEventListener('initializing', e => {
-            const elsaStudio = e.detail;
-            const options = 
-                      {
-                domain: "https://identity-staging-homesengland.eu.auth0.com/",
-                    client_id: "D4ZLiiwsBq9tMZXbCx2TwBUiNDcsXuIy",
-                        audience: "https://elsa-server-api",
-            };
-            
-            elsaStudio.pluginManager.registerPlugin(AuthorizationMiddlewarePlugin);
-        });
-    </script>*@
+   
 </body>
 </html>
