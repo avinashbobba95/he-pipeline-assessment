@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Elsa.Dashboard
 {
@@ -29,7 +29,7 @@ namespace Elsa.Dashboard
             var elsaSetupNonce = $"nonce-{nonceConfig.ElsaSetup}";
             var elsaServer = _configuration["Urls:ElsaServer"];
 
-            var connectSrc = $"connect-src 'self' {elsaServer};";
+            var connectSrc = $"connect-src 'self' {elsaServer}  https://identity-staging-homesengland.eu.auth0.com/oauth/token ;";
             var defaultSrc = $"default-src 'self';";
             var scriptSrc = $"script-src 'self' 'strict-dynamic' '{elsaSetupNonce}' 'unsafe-eval';";
             var styleSrcElem = $"style-src-elem 'self' 'unsafe-inline';";
