@@ -1,5 +1,5 @@
 import { Component, h, Event, EventEmitter, Prop, State } from '@stencil/core';
-
+import state from '../../stores/store';
 import { SyntaxNames } from '../../constants/constants';
 import { DataDictionary, DataDictionaryGroup } from '../../models/custom-component-models';
 import {
@@ -7,9 +7,6 @@ import {
   ActivityModel,
   ActivityPropertyDescriptor,
 } from "../../models/elsa-interfaces";
-
-//import { mapSyntaxToLanguage, parseJson, Map } from "../../utils/utils";
-import { parseJson } from "../../utils/utils";
 
 @Component({
   tag: 'he-question-data-dictionary-property',
@@ -32,7 +29,7 @@ export class HEQuestionDataDictionaryProperty {
   dataDictionaryDisplayToggle: boolean = false;
 
   async componentWillLoad() {
-    this.groupDictionary = parseJson(this.propertyDescriptor.options);
+    this.groupDictionary = state.dataDictionary;
     this.dataDictionary = [];
     this.selectedDataDictionaryItem = parseInt(this.propertyModel.expressions[SyntaxNames.Literal]);
   

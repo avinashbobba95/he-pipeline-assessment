@@ -63,13 +63,24 @@ export function mapSyntaxToLanguage(syntax: string): any {
 }
 
 export function filterPropertiesByType(questionProperties: Array<HeActivityPropertyDescriptor>, questionType: string) {
+  console.log("Filtering properties", questionType);
+  console.log("Properties to filter", questionProperties);
   const propertiesJson: string = JSON.stringify(questionProperties);
   const properties: Array<HeActivityPropertyDescriptor> = JSON.parse(propertiesJson);
+  console.log("Random filter", properties.filter((x) => x.displayInDesigner == true))
+  console.log("Alternative filter", properties.filter((x) => x.expectedOutputType === 'string'));
+  console.log("HE Properties", properties);
   properties.forEach(p => {
-    if (p.conditionalActivityTypes != null && p.conditionalActivityTypes.length > 0 && !p.conditionalActivityTypes.includes(questionType))
-      p.displayInDesigner = false;
+    if (p.conditionalActivityTypes != null && p.conditionalActivityTypes.length > 0) {
+      console.log("Has Conditional properties");
+      if (!p.conditionalActivityTypes.includes(questionType)){
+        p.displayInDesigner = false;
+        console.log("includes the question type", p)
+      }
+    }
   });
-  const filteredProperties: Array<HeActivityPropertyDescriptor> = properties.filter(property => property.displayInDesigner == true);
+  const filteredProperties: Array<HeActivityPropertyDescriptor> = properties.filter((property) => property.displayInDesigner === true);
+  console.log("Filtered properties in method", filteredProperties);
   return filteredProperties;
 }
 

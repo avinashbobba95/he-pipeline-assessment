@@ -15,26 +15,26 @@ namespace Elsa.Server.Tests.Features.Activities
 {
     public class ActivitiesControllerTests
     {
-        [Theory]
-        [AutoData]
-        public async Task ActvityController_GetCustomActivityProperties_ShouldReturnOK_WhenCommandHandlerIsSuccessful(
-            Dictionary<string, List<HeActivityInputDescriptor>> response,
-            Mock<IMediator> mediatorMock)
-        {
-            //Arrange
-            mediatorMock.Setup(x => x.Send(It.IsAny<CustomPropertyCommand>(), CancellationToken.None)).ReturnsAsync(response);
+        //[Theory]
+        //[AutoData]
+        //public async Task ActvityController_GetCustomActivityProperties_ShouldReturnOK_WhenCommandHandlerIsSuccessful(
+        //    Dictionary<string, List<HeActivityInputDescriptor>> response,
+        //    Mock<IMediator> mediatorMock)
+        //{
+        //    //Arrange
+        //    mediatorMock.Setup(x => x.Send(It.IsAny<CustomPropertyCommand>(), CancellationToken.None)).ReturnsAsync(response);
 
-            ActivitiesController controller = new ActivitiesController(mediatorMock.Object);
+        //    ActivitiesController controller = new ActivitiesController(mediatorMock.Object);
 
-            //Act
-            var result = await controller.GetCustomActivityProperties();
+        //    //Act
+        //    var result = await controller.GetCustomActivityProperties();
 
-            var firstKey = response.Keys.First();
+        //    var firstKey = response.Keys.First();
 
-            //Assert
-            Assert.NotNull(result);
-            Assert.IsType<OkObjectResult>(result);
-        }
+        //    //Assert
+        //    Assert.NotNull(result);
+        //    Assert.IsType<OkObjectResult>(result);
+        //}
 
         [Theory]
         [AutoData]

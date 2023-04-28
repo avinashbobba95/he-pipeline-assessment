@@ -66,6 +66,7 @@ export class HePropertyDisplayManager {
   }
 
   displayNested(model: ActivityModel, property: NestedProperty, onUpdate: Function) {
+    console.log("Displaying nested");
     const driver: HePropertyDisplayDriver = this.getDriver(property.descriptor.uiHint);
     return driver.displayNested(model, property, onUpdate)
   }

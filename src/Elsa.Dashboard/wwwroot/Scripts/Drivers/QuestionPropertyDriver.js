@@ -8,7 +8,8 @@ export function QuestionDriver(elementName, customProperties) {
     questionActivity.activityModel = activity;
     questionActivity.propertyDescriptor = property;
     questionActivity.propertyModel = prop;
-    questionActivity.questionProperties = customProperties[PropertyDescriberHints.QuestionScreenBuilder];
+    questionActivity.questionProperties = JSON.parse(customProperties[PropertyDescriberHints.QuestionScreenBuilder]);
+    questionActivity.dataDictionaryGroups = JSON.parse(customProperties[PropertyDescriberHints.DataDictionaryGroups]);
     return questionActivity;
   }
 }

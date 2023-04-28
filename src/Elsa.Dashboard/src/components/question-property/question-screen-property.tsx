@@ -1,5 +1,5 @@
 import { Component, h, Prop, State } from '@stencil/core';
-
+import state from '../../stores/store';
 import {
   ActivityDefinitionProperty,
   ActivityModel,
@@ -9,6 +9,7 @@ import {
 } from '../../models/elsa-interfaces';
 
 import {
+    DataDictionaryGroup,
     HeActivityPropertyDescriptor,
   //QuestionModel,
   NestedPropertyModel,
@@ -39,6 +40,7 @@ export class QuestionScreen {
   @Prop() propertyDescriptor: ActivityPropertyDescriptor;
   @Prop() propertyModel: ActivityDefinitionProperty;
   @Prop() questionProperties: Array<HeActivityPropertyDescriptor>;
+  @Prop() dataDictionaryGroups: Array<DataDictionaryGroup> = [];
   @State() questionModel: QuestionScreenProperty = new QuestionScreenProperty();
   @State() iconProvider = new IconProvider();
   @State() questionProvider = new QuestionProvider(Object.values(QuestionLibrary));
@@ -49,6 +51,9 @@ export class QuestionScreen {
 
 
   async componentWillLoad() {
+    console.log("properties", this.questionProperties)
+    console.log("dictionary", this.dataDictionaryGroups)
+    state.dataDictionary = this.dataDictionaryGroups;
     const propertyModel = this.propertyModel;
     const choicesJson = propertyModel.expressions[SyntaxNames.QuestionList]
     this.questionModel = parseJson(choicesJson) || this.defaultActivityModel();
@@ -127,6 +132,7 @@ export class QuestionScreen {
     const questionName = `Question ${id}`;
     const newValue = this.newQuestionValue(questionName, id);
     let propertyDescriptors = filterPropertiesByType(this.questionProperties, questionType.nameConstant);
+    console.log("Filtered property descriptors", propertyDescriptors);
     let newQuestion: NestedPropertyModel = { value: newValue, descriptor: propertyDescriptors, ActivityType: questionType }
     this.questionModel = { ...this.questionModel, activities: [...this.questionModel.activities, newQuestion] };
     

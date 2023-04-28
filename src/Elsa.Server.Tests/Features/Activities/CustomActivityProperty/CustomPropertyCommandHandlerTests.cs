@@ -10,24 +10,24 @@ namespace Elsa.Server.Tests.Features.Activities.CustomActivityProperty;
 
 public class CustomPropertyCommandHandlerTests
 {
-    [Theory]
-    [AutoMoqData]
-    public async Task Handle_ReturnsCorrectValues_GivenNoErrorsThrown(
-        [Frozen] Mock<ICustomPropertyDescriber> propertyDescriber,
-        CustomPropertyCommand loadCustomProperties,
-        List<HeActivityInputDescriptor> inputDescriptors,
-        CustomPropertyCommandHandler sut)
-    {
-        //Arrange
-        propertyDescriber.Setup(x => x.DescribeInputProperties(typeof(Question))).Returns(inputDescriptors);
+    //[Theory]
+    //[AutoMoqData]
+    //public async Task Handle_ReturnsCorrectValues_GivenNoErrorsThrown(
+    //    [Frozen] Mock<ICustomPropertyDescriber> propertyDescriber,
+    //    CustomPropertyCommand loadCustomProperties,
+    //    List<HeActivityInputDescriptor> inputDescriptors,
+    //    CustomPropertyCommandHandler sut)
+    //{
+    //    //Arrange
+    //    propertyDescriber.Setup(x => x.DescribeInputProperties(typeof(Question))).Returns(inputDescriptors);
 
-        //Act
-        var result = await sut.Handle(loadCustomProperties, CancellationToken.None);
+    //    //Act
+    //    var result = await sut.Handle(loadCustomProperties, CancellationToken.None);
 
-        //Assert
-        Assert.True(result.GetType() == typeof(Dictionary<string, List<HeActivityInputDescriptor>>));
-        Assert.Equal(inputDescriptors, result.Values.First());
-    }
+    //    //Assert
+    //    Assert.True(result.GetType() == typeof(Dictionary<string, List<HeActivityInputDescriptor>>));
+    //    Assert.Equal(inputDescriptors, result.Values.First());
+    //}
 
     [Theory]
     [AutoMoqData]

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Event, Prop, State } from '@stencil/core';
+import { Component, EventEmitter, Event, Prop, State, h } from '@stencil/core';
 
 import {
     ActivityModel,
@@ -43,6 +43,7 @@ export class QuestionProperty {
   }
 
   getOrCreateQuestionProperties() {
+    console.log("Getting question properties from model", this.questionModel);
     const model = this.questionModel;
     const propertyJson = model.value.expressions[SyntaxNames.QuestionList];
     if (propertyJson != null && propertyJson != undefined && parseJson(propertyJson).length > 0) {
@@ -105,17 +106,20 @@ export class QuestionProperty {
   }
 
   render() {
-
-    const displayManager = this.displayManager;
+    console.log("Rendering Questions")
+    console.log("Nested properties", this.nestedQuestionProperties);
+    //const displayManager = this.displayManager;
 
     const renderPropertyEditor = (property: NestedProperty) => {
-      var content = displayManager.displayNested(this.activityModel, property, this.onPropertyExpressionChange.bind(this));
-      return content;
-    }
+      //var content = displayManager.displayNested(this.activityModel, property, this.onPropertyExpressionChange.bind(this));
+      //return content;
+      console.log(property);
+      return <br>
+        <p>HEllo!</p>      </br>
+    };
 
     return (
       this.nestedQuestionProperties.map(renderPropertyEditor)
     )
-    
   }
 }
