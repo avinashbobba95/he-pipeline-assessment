@@ -67,7 +67,7 @@ namespace Elsa.CustomActivities.Handlers
             if (property.Expressions!.ContainsKey(RadioSyntaxNames.PrePopulated))
             {
                 string expression = property.Expressions[RadioSyntaxNames.PrePopulated] ?? "false";
-                bool prePopulated = await property.EvaluateFromExpressionsExplicit<bool>(evaluator,
+                 bool prePopulated = await property.EvaluateFromExpressionsExplicit<bool>(evaluator,
                     context, _logger,
                     expression,
                     SyntaxNames.JavaScript,
