@@ -3,6 +3,7 @@ using Elsa.CustomInfrastructure.Extensions;
 using Elsa.CustomWorkflow.Sdk.HttpClients;
 using Elsa.Dashboard;
 using Elsa.Dashboard.Models;
+using He.PipelineAssessment.Data.Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,16 @@ builder.Services.AddHttpClient("ElsaServerClient", client =>
 
 builder.Services.AddScoped<IElsaServerHttpClient, ElsaServerHttpClient>();
 
+builder.Services.AddScoped<IIdentityClient, IdentityClient>();
+builder.Services.AddTransient<BearerTokenHandler>();
+
+builder.Services.AddOptions<IdentityClientConfig>()
+.Configure<IConfiguration>((settings, configuration) =>
+{
+  configuration.GetSection("IdentityClientConfig").Bind(settings);
+});
+
+
 // For Authentication
 builder.AddCustomAuth0Configuration();
 builder.Services.AddCustomAuthentication();
@@ -46,13 +57,6 @@ if (!app.Environment.IsDevelopment())
   app.UseExceptionHandler("/Error");
 
 }
-
-app.Use((context, next) =>
-{
-  context.Request.Scheme = "https";
-  return next();
-});
-
 
 app.Use((context, next) =>
 {

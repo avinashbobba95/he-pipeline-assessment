@@ -28,12 +28,16 @@ using Elsa.Server.Helpers;
 using Elsa.Server.Providers;
 using Elsa.Server.Services;
 using Elsa.Server.StartupTasks;
+using He.Identity.Auth0;
+using He.Identity.Mvc;
 using He.PipelineAssessment.Data.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 var elsaConnectionString = builder.Configuration.GetConnectionString("Elsa");
@@ -129,6 +133,10 @@ builder.Services.AddOptions<IdentityClientConfig>()
 
 builder.Services.AddEsriHttpClients(builder.Configuration, builder.Environment.IsDevelopment());
 
+builder.AddCustomAuth0Configuration();
+builder.Services.AddCustomAuthentication();
+
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -138,11 +146,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+
 app
     .UseCors()
     .UseHttpsRedirection()
     .UseStaticFiles() // For Dashboard.
     .UseRouting()
+  .UseAuthentication()
+  .UseAuthorization()
+
     .UseEndpoints(endpoints =>
     {
         // Elsa API Endpoints are implemented as regular ASP.NET Core API controllers.
