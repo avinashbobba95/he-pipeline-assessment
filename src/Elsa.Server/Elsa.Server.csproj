@@ -47,6 +47,9 @@
     <ProjectReference Include="..\Elsa.CustomActivities\Elsa.CustomActivities.csproj" />
     <ProjectReference Include="..\Elsa.CustomInfrastructure\Elsa.CustomInfrastructure.csproj" />
     <ProjectReference Include="..\Elsa.CustomWorkflow.Sdk\Elsa.CustomWorkflow.Sdk.csproj" />
+    <ProjectReference Include="..\He.Identity\src\He.Identity.Auth0\He.Identity.Auth0.csproj" />
+    <ProjectReference Include="..\He.Identity\src\He.Identity.Mvc\He.Identity.Mvc.csproj" />
+    <ProjectReference Include="..\He.Identity\src\He.Identity\He.Identity.csproj" />
     <ProjectReference Include="..\He.PipelineAssessment.Data\He.PipelineAssessment.Data.csproj" />
   </ItemGroup>
 

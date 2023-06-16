@@ -1,0 +1,490 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>He.Identity.Mvc</name>
+    </assembly>
+    <members>
+        <member name="T:He.Identity.Mvc.ClientCredentials.ClientCredentialAccessToken">
+            <summary>
+            OAuthTokenResponse.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.ClientCredentials.ClientCredentialAccessToken.AccessToken">
+            <summary>
+            Gets or sets access_token.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.ClientCredentials.ClientCredentialAccessToken.ExpiresIn">
+            <summary>
+            Gets or sets expires_in.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.ClientCredentials.ClientCredentialAccessToken.TokenType">
+            <summary>
+            Gets or sets token_type.
+            </summary>
+        </member>
+        <member name="T:He.Identity.Mvc.ClientCredentials.ClientCredentialHelper">
+            <inheritdoc/>
+        </member>
+        <member name="M:He.Identity.Mvc.ClientCredentials.ClientCredentialHelper.#ctor(Auth0.AuthenticationApi.IAuthenticationApiClient,He.Identity.Mvc.HeIdentityCookieConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:He.Identity.Mvc.ClientCredentials.ClientCredentialHelper"/> class.
+            </summary>
+            <param name="auth0Client">authClient.</param>
+            <param name="heIdentityConfig">heIdentityConfig.</param>
+        </member>
+        <member name="M:He.Identity.Mvc.ClientCredentials.ClientCredentialHelper.GetAccessTokenAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:He.Identity.Mvc.ClientCredentials.ClientCredentialHelper.GetAccessTokenAsync(System.String,System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:He.Identity.Mvc.ClientCredentials.IClientCredentialHelper">
+            <summary>
+            ClientCredentialHelper.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.ClientCredentials.IClientCredentialHelper.GetAccessTokenAsync(System.String)">
+            <summary>
+            GetAccessToken. Uses the Client Id and Client Secret from HeIdentityCookieConfiguration.
+            </summary>
+            <param name="audience">audience.</param>
+            <returns>Task.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.ClientCredentials.IClientCredentialHelper.GetAccessTokenAsync(System.String,System.String,System.String)">
+            <summary>
+            GetAccessToken.
+            </summary>
+            <param name="clientId">clientId.</param>
+            <param name="clientSecret">clientSecret.</param>
+            <param name="audience">audience.</param>
+            <returns>Task.</returns>
+        </member>
+        <member name="T:He.Identity.Mvc.Controllers.HeIdentityController">
+            <summary>
+            Controllers to support He Identity.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.Controllers.HeIdentityController.#ctor(He.Identity.Mvc.HeIdentityConfiguration,He.Identity.IIdentityManagementService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:He.Identity.Mvc.Controllers.HeIdentityController"/> class.
+            </summary>
+            <param name="config">The identity configuration.</param>
+            <param name="identityManagementService">The identity management service.</param>
+        </member>
+        <member name="M:He.Identity.Mvc.Controllers.HeIdentityController.VerifyEmail(System.Int32)">
+            <summary>
+            The Verify Email page.
+            </summary>
+            <param name="attempt">The attempt.</param>
+            <returns>The Verify Email view.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.Controllers.HeIdentityController.SignIn(System.String)">
+            <summary>
+            Signs the user in.
+            </summary>
+            <param name="redirectUri">The url to return the user to.</param>
+            <returns>returnUrl to the identity service login page.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.Controllers.HeIdentityController.SignUp(System.String)">
+            <summary>
+            Redirects the user to the signup page.
+            </summary>
+            <param name="redirectUri">The url to return the user to.</param>
+            <returns>Redirection to the identity service signup page.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.Controllers.HeIdentityController.SignOut(System.String)">
+            <summary>
+            Logs the user out.
+            </summary>
+            <param name="redirectUri">The url to return the user to.</param>
+            <returns>Task.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.Controllers.HeIdentityController.CheckSession">
+            <summary>
+            Checks user session.
+            </summary>
+            <returns>Task.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.Controllers.HeIdentityController.ResendVerificationEmail(System.String,System.Int32)">
+            <summary>
+            Resend the verification email.
+            </summary>
+            <param name="email">The email address.</param>
+            <param name="attempt">The attempt.</param>
+            <returns>A response.</returns>
+        </member>
+        <member name="T:He.Identity.Mvc.Handlers.CookieValidatePrincipalContextFacade">
+            <summary>
+            A wrapper around CookieValidatePrincipalContext.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.Handlers.CookieValidatePrincipalContextFacade.#ctor(Microsoft.AspNetCore.Authentication.Cookies.CookieValidatePrincipalContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:He.Identity.Mvc.Handlers.CookieValidatePrincipalContextFacade"/> class.
+            </summary>
+            <param name="context">context.</param>
+        </member>
+        <member name="P:He.Identity.Mvc.Handlers.CookieValidatePrincipalContextFacade.UserIsAuthenticated">
+            <inheritdoc/>
+        </member>
+        <member name="P:He.Identity.Mvc.Handlers.CookieValidatePrincipalContextFacade.RequestPathValue">
+            <inheritdoc/>
+        </member>
+        <member name="M:He.Identity.Mvc.Handlers.CookieValidatePrincipalContextFacade.GetToken(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:He.Identity.Mvc.Handlers.CookieValidatePrincipalContextFacade.UpdateToken(System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:He.Identity.Mvc.Handlers.CookieValidatePrincipalContextFacade.ShouldRenew">
+            <inheritdoc/>
+        </member>
+        <member name="M:He.Identity.Mvc.Handlers.CookieValidatePrincipalContextFacade.RejectPrincipal">
+            <inheritdoc/>
+        </member>
+        <member name="T:He.Identity.Mvc.Handlers.ICookieValidatePrincipalContextFacade">
+            <summary>
+            ICookieValidatePrincipalContextFacade.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.Handlers.ICookieValidatePrincipalContextFacade.UserIsAuthenticated">
+            <summary>
+            Gets a value indicating whether the user is authenticated.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.Handlers.ICookieValidatePrincipalContextFacade.RequestPathValue">
+            <summary>
+            Gets the request path.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.Handlers.ICookieValidatePrincipalContextFacade.GetToken(System.String)">
+            <summary>
+            Returns a token.
+            </summary>
+            <param name="tokenName">The name of the token to retreive.</param>
+            <returns>The value of the token.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.Handlers.ICookieValidatePrincipalContextFacade.UpdateToken(System.String,System.String)">
+            <summary>
+            Update a token.
+            </summary>
+            <param name="tokenName">The name of the token to update.</param>
+            <param name="tokenValue">The value of the token.</param>
+        </member>
+        <member name="M:He.Identity.Mvc.Handlers.ICookieValidatePrincipalContextFacade.ShouldRenew">
+            <summary>
+            Renew the cookie.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.Handlers.ICookieValidatePrincipalContextFacade.RejectPrincipal">
+            <summary>
+            Reject the incomming principal.
+            </summary>
+        </member>
+        <member name="T:He.Identity.Mvc.Handlers.TokenRefreshHandler">
+            <summary>
+            TokenRefreshHandler.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.Handlers.TokenRefreshHandler.#ctor(He.Identity.Mvc.HeIdentityCookieConfiguration,Auth0.AuthenticationApi.IAuthenticationApiClient,Microsoft.Extensions.Logging.ILogger{He.Identity.Mvc.Handlers.TokenRefreshHandler})">
+            <summary>
+            Initializes a new instance of the <see cref="T:He.Identity.Mvc.Handlers.TokenRefreshHandler"/> class.
+            </summary>
+            <param name="heIdentityConfig">Config.</param>
+            <param name="auth0Client">auth0Client.</param>
+            <param name="logger">logger.</param>
+        </member>
+        <member name="M:He.Identity.Mvc.Handlers.TokenRefreshHandler.EnsureTokenRefreshAsync(He.Identity.Mvc.Handlers.ICookieValidatePrincipalContextFacade,System.DateTimeOffset)">
+            <summary>
+            Ensures ID Tokens and Access Tokens are current.
+            </summary>
+            <param name="context">CookieValidatePrincipalContextFacade.</param>
+            <param name="utcNow">UTC now.</param>
+            <returns>Task.</returns>
+        </member>
+        <member name="T:He.Identity.Mvc.Extensions.RevokeRefreshTokenHandler">
+            <summary>
+            Extension to attempt to revoke the refresh token.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.Extensions.RevokeRefreshTokenHandler.#ctor(He.Identity.Mvc.HeIdentityCookieConfiguration,Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Authentication.OpenIdConnect.OpenIdConnectOptions},Microsoft.Extensions.Logging.ILogger{He.Identity.Mvc.Extensions.RevokeRefreshTokenHandler})">
+            <summary>
+            Initializes a new instance of the <see cref="T:He.Identity.Mvc.Extensions.RevokeRefreshTokenHandler"/> class.
+            </summary>
+            <param name="heIdentityConfig">heIdentityConfig.</param>
+            <param name="openIdConnectOptions">openIdConnectOptions.</param>
+            <param name="logger">logger.</param>
+        </member>
+        <member name="M:He.Identity.Mvc.Extensions.RevokeRefreshTokenHandler.RevokeRefreshTokenAsync(System.String)">
+            <summary>
+            If there is a refresh token then revokes it from Auth0.
+            </summary>
+            <param name="refreshToken">The refresh token to revoke.</param>
+            <returns>Task.</returns>
+        </member>
+        <member name="T:He.Identity.Mvc.HeIdentityConfiguration">
+            <summary>
+            Configuration for Homes England Identity service.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.HeIdentityConfiguration.Domain">
+            <summary>
+            Gets or sets the auth tenant.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.HeIdentityConfiguration.Audience">
+            <summary>
+            Gets or sets the Audience.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.HeIdentityConfiguration.SupportEmail">
+            <summary>
+            Gets or sets the support email.
+            </summary>
+        </member>
+        <member name="T:He.Identity.Mvc.HeIdentityConstants">
+            <summary>
+            Constants.
+            </summary>
+        </member>
+        <member name="F:He.Identity.Mvc.HeIdentityConstants.AuthenticationScheme">
+            <summary>
+            The Authentication Scheme.
+            </summary>
+        </member>
+        <member name="T:He.Identity.Mvc.HeIdentityCookieConfiguration">
+            <summary>
+            Configuration for Homes England Identity service.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.HeIdentityCookieConfiguration.ClientId">
+            <summary>
+            Gets or sets the Client Id.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.HeIdentityCookieConfiguration.ClientSecret">
+            <summary>
+            Gets or sets the Client Secret.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.HeIdentityCookieConfiguration.ManageAccountUrl">
+            <summary>
+            Gets or sets the Manage Account Url.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.HeIdentityCookieConfiguration.RefreshBeforeExpirySeconds">
+            <summary>
+            Gets or sets how long before a session expires should we attempt to refresh the access tokens and the OIDC token.
+            </summary>
+            <remarks>
+            300 seconds by default (5 minutes).
+            </remarks>
+        </member>
+        <member name="T:He.Identity.Mvc.HeIdentityCookiePolicyExtensions">
+            <summary>
+            Configures Cookie Policy.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.HeIdentityCookiePolicyExtensions.ConfigureCookiePolicyForHeIdentity(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Cookie configuration for Auth0. We need to allow cookies posted from external sites.
+            </summary>
+            <param name="services">DI services.</param>
+            <returns>The DI services.</returns>
+        </member>
+        <member name="T:He.Identity.Mvc.HeIdentityException">
+            <summary>
+            HeIdentityException.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.HeIdentityException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:He.Identity.Mvc.HeIdentityException"/> class.
+            </summary>
+            <param name="message">message.</param>
+            <param name="innerException">innerException.</param>
+        </member>
+        <member name="T:He.Identity.Mvc.HeIdentityExtensions">
+            <summary>
+            A ServiceCollection extension to add Homes England Authentication to an MVC project.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.HeIdentityExtensions.AddHeIdentityJwtBearerAuth(Microsoft.Extensions.DependencyInjection.IServiceCollection,He.Identity.Mvc.HeIdentityJwtConfiguration)">
+            <summary>
+            Add Homes England Authorisation using JwtBearer.
+            </summary>
+            <param name="services">The service collection.</param>
+            <param name="heIdentityConfig">Identity Configuration.</param>
+            <returns>IServiceCollection.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.HeIdentityExtensions.AddHeIdentityJwtBearerAuths(Microsoft.Extensions.DependencyInjection.IServiceCollection,He.Identity.Mvc.HeIdentityMultiSchemeJwtConfiguration)">
+            <summary>
+            Add Homes England Authorisation using JwtBearer.
+            </summary>
+            <param name="services">The service collection.</param>
+            <param name="heIdentityConfig">Identity Configuration.</param>
+            <returns>IServiceCollection.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.HeIdentityExtensions.AddHeIdentityCookieAuth(Microsoft.Extensions.DependencyInjection.IMvcBuilder,He.Identity.Mvc.HeIdentityCookieConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Add Homes England Authorisation using Cookies.
+            </summary>
+            <param name="builder">The MVC builder.</param>
+            <param name="heIdentityConfig">Identity Configuration.</param>
+            <param name="env">The environment.</param>
+            <param name="additionalScopes">Any extra required scopes. The following scopes are always included: openid, profile, email, offline_access.</param>
+            <returns>IServiceCollection.</returns>
+            <remarks>
+            Assumes this section is in appsettings.json:
+            "HeIdentity": {
+              "Domain": "",
+              "ClientId": "",
+              "ClientSecret": ""
+            }
+            .
+            </remarks>
+        </member>
+        <member name="T:He.Identity.Mvc.HeIdentityJwtConfiguration">
+            <summary>
+            Configuration for Homes England Indentity service.
+            </summary>
+        </member>
+        <member name="T:He.Identity.Mvc.HeIdentityMultiSchemeJwtConfiguration">
+            <summary>
+            Configuration for Homes England Identity service. Use when multiple Authorities are allowed.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.HeIdentityMultiSchemeJwtConfiguration.#ctor">
+            <summary>
+            The default constructor.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.HeIdentityMultiSchemeJwtConfiguration.Configurations">
+            <summary>
+            A list of HeIdentityJwtConfigurations.
+            </summary>
+        </member>
+        <member name="T:He.Identity.Mvc.HeIdentityPaths">
+            <summary>
+            He Identity paths.
+            </summary>
+        </member>
+        <member name="F:He.Identity.Mvc.HeIdentityPaths.SignIn">
+            <summary>
+            SignIn path.
+            </summary>
+        </member>
+        <member name="F:He.Identity.Mvc.HeIdentityPaths.SignUp">
+            <summary>
+            SignUp path.
+            </summary>
+        </member>
+        <member name="F:He.Identity.Mvc.HeIdentityPaths.SignOut">
+            <summary>
+            SignOut path.
+            </summary>
+        </member>
+        <member name="F:He.Identity.Mvc.HeIdentityPaths.VerifyEmail">
+            <summary>
+            VerifyEmail path.
+            </summary>
+        </member>
+        <member name="F:He.Identity.Mvc.HeIdentityPaths.AccessDenied">
+            <summary>
+            AccessDenied path.
+            </summary>
+        </member>
+        <member name="F:He.Identity.Mvc.HeIdentityPaths.Callback">
+            <summary>
+            Callback path.
+            </summary>
+        </member>
+        <member name="F:He.Identity.Mvc.HeIdentityPaths.CheckSession">
+            <summary>
+            Check session.
+            </summary>
+        </member>
+        <member name="F:He.Identity.Mvc.HeIdentityPaths.ResendVerificationEmail">
+            <summary>
+            Resend verification email.
+            </summary>
+        </member>
+        <member name="T:He.Identity.Mvc.TagHelpers.HeIdentityIdleSessionTagHelper">
+            <summary>
+            Creates a Script tag that runs checking for
+            user inactivity and redirects to the login page
+            if the user's session times out.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.TagHelpers.HeIdentityIdleSessionTagHelper.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            Initializes a new instance of the <see cref="T:He.Identity.Mvc.TagHelpers.HeIdentityIdleSessionTagHelper"/> class.
+            </summary>
+            <param name="httpContextAccessor">httpContextAccessor.</param>
+        </member>
+        <member name="P:He.Identity.Mvc.TagHelpers.HeIdentityIdleSessionTagHelper.TimeInSeconds">
+            <summary>
+            Gets or sets TimeInSeconds.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.TagHelpers.HeIdentityIdleSessionTagHelper.Process(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Creates the tag helper.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="output">The output.</param>
+        </member>
+        <member name="T:He.Identity.Mvc.TagHelpers.HeIdentitySigninTagHelper">
+            <summary>
+            Creates a Singin/Signout link.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.TagHelpers.HeIdentitySigninTagHelper.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Routing.IUrlHelperFactory,He.Identity.Mvc.HeIdentityCookieConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:He.Identity.Mvc.TagHelpers.HeIdentitySigninTagHelper"/> class.
+            </summary>
+            <param name="httpContextAccessor">httpContextAccessor.</param>
+            <param name="urlHelperFactory">urlHelperFactory.</param>
+            <param name="heIdentityConfig">heIdentityConfig.</param>
+        </member>
+        <member name="P:He.Identity.Mvc.TagHelpers.HeIdentitySigninTagHelper.ViewContext">
+            <summary>
+            Gets or sets the ViewContext.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.TagHelpers.HeIdentitySigninTagHelper.Request">
+            <summary>
+            Gets Request.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.TagHelpers.HeIdentitySigninTagHelper.Process(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Process.
+            </summary>
+            <param name="context">context.</param>
+            <param name="output">output.</param>
+        </member>
+        <member name="T:He.Identity.Mvc.ViewModels.VerifyEmailViewModel">
+            <summary>
+            View Model.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.ViewModels.VerifyEmailViewModel.EmailtoVerify">
+            <summary>
+            Gets or sets the email that needs to be verified.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.ViewModels.VerifyEmailViewModel.Attempt">
+            <summary>
+            Gets or sets the attempt.
+            </summary>
+        </member>
+        <member name="P:He.Identity.Mvc.ViewModels.VerifyEmailViewModel.SupportEmail">
+            <summary>
+            Gets or sets the support email.
+            </summary>
+        </member>
+    </members>
+</doc>

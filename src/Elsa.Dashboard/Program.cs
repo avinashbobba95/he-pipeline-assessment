@@ -37,7 +37,6 @@ builder.Services.AddHttpClient("ElsaServerClient", client =>
 builder.Services.AddScoped<IElsaServerHttpClient, ElsaServerHttpClient>();
 
 builder.Services.AddScoped<IIdentityClient, IdentityClient>();
-builder.Services.AddTransient<BearerTokenHandler>();
 
 builder.Services.AddOptions<IdentityClientConfig>()
 .Configure<IConfiguration>((settings, configuration) =>

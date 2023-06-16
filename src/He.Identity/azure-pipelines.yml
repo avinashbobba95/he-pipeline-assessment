@@ -1,0 +1,23 @@
+trigger: none
+name: 1.0.$(Rev:r)
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: 'Cloud Hosting Service/Templates'
+
+variables:
+  ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:
+    PackageVersion: $(Build.BuildNumber)-alpha
+  ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    PackageVersion: $(Build.BuildNumber)
+
+jobs:
+  - template: dotnet.yml@templates
+    parameters:
+      identifier: 'solution'
+      workingDirectory: 'src'      
+      unitTestProjects: '**/*Tests.csproj'
+      coverageThreshold: 0
+      packProjects: '**/*[!Tests].csproj'
+      packageVersion: $(PackageVersion)

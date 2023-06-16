@@ -27,9 +27,22 @@ namespace Elsa.Dashboard.PageModels
 
     public async Task OnGetAsync()
     {
-      if (!string.IsNullOrEmpty(_serverUrl))
+      CookieContainer cookies = new CookieContainer(); //this container saves cookies from responses and send them in requests
+      string concatCookie = "";
+      foreach (var cookie in HttpContext.Request.Cookies)
       {
-        JsonResponse = await _client.LoadCustomActivities(_serverUrl);
+
+        if (cookie.Key.ToLower().Contains("he_identity"))
+        {
+          concatCookie += string.Format("{0}={1}; ", cookie.Key, cookie.Value);
+        }
+
+        cookies.Add(new Cookie(cookie.Key, cookie.Value, "/", "localhost"));
+      }
+
+        if (!string.IsNullOrEmpty(_serverUrl))
+      {
+        JsonResponse = await _client.LoadCustomActivities(_serverUrl, concatCookie);
       }
       else
       {

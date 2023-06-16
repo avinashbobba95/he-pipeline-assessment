@@ -39,7 +39,6 @@ namespace Elsa.CustomInfrastructure.Extensions
           .AddControllersWithViews()
           .AddHeIdentityCookieAuth(heIdentityConfiguration, env);
 
-      builder.Services.AddSingleton<HttpClient>();
       builder.Services.ConfigureIdentityManagementService(x => x.UseAuth0(auth0Config, auth0ManagementConfig));
 
       builder.Services.ConfigureHeCookieSettings(

@@ -23,7 +23,8 @@ namespace Elsa.Dashboard.Tests.Pages
         Mock<Urls> urlMock,
         ILogger<ElsaDashboardLoader> logger,
         Dictionary<string, HeActivityInputDescriptorDTO> data,
-        string mockUrl
+        string mockUrl,
+        string cookie
             )
         {
 
@@ -31,7 +32,7 @@ namespace Elsa.Dashboard.Tests.Pages
             var dataJson = JsonConvert.SerializeObject(data);
             config.SetupGet(o => o.Value).Returns(urlMock.Object);
             urlMock.SetupGet(u => u.ElsaServer).Returns(mockUrl);
-            httpClient.Setup(c => c.LoadCustomActivities(mockUrl)).ReturnsAsync(dataJson);
+            httpClient.Setup(c => c.LoadCustomActivities(mockUrl, cookie)).ReturnsAsync(dataJson);
             var pageModel = new ElsaDashboardLoader(httpClient.Object, config.Object, logger);
 
             // Act
@@ -49,7 +50,8 @@ namespace Elsa.Dashboard.Tests.Pages
         Mock<Urls> urlMock,
         Dictionary<string, HeActivityInputDescriptorDTO> data,
         ILogger<ElsaDashboardLoader> logger,
-        string mockUrl
+        string mockUrl,
+        string cookie
             )
         {
 
@@ -57,7 +59,7 @@ namespace Elsa.Dashboard.Tests.Pages
             var dataJson = JsonConvert.SerializeObject(data);
             config.SetupGet(o => o.Value).Returns(urlMock.Object);
             urlMock.SetupGet(u => u.ElsaServer).Returns(mockUrl);
-            httpClient.Setup(c => c.LoadCustomActivities(mockUrl)).ReturnsAsync(dataJson);
+            httpClient.Setup(c => c.LoadCustomActivities(mockUrl, cookie)).ReturnsAsync(dataJson);
             var pageModel = new ElsaDashboardLoader(httpClient.Object, config.Object, logger);
 
             // Act

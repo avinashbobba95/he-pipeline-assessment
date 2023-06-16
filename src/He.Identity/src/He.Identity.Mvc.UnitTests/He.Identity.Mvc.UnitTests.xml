@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>He.Identity.Mvc.UnitTests</name>
+    </assembly>
+    <members>
+        <member name="T:He.Identity.Mvc.UnitTests.ClientCredentials.ClientCredentialHelperTests">
+            <summary>
+            ClientCredentialHelper Tests.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.ClientCredentials.ClientCredentialHelperTests.GetAccessTokenAsync_ShouldCreateRequestInExpectedFormatForAuth0">
+            <summary>
+            GetAccessTokenAsync should create a request expected by Auth0.
+            </summary>
+            <returns>Task.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.ClientCredentials.ClientCredentialHelperTests.GetAccessTokenAsync_WhenError_ExpectHeIdentityException">
+            <summary>
+            GetAccessTokenAsync should create a request expected by Auth0.
+            </summary>
+            <returns>Task.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.ClientCredentials.ClientCredentialHelperTests.GetAccessTokenAsync_ShouldCreateRequestUsingConfigInExpectedFormatForAuth0">
+            <summary>
+            GetAccessTokenAsync should create a request expected by Auth0.
+            </summary>
+            <returns>Task.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.ClientCredentials.ClientCredentialHelperTests.GetAccessTokenAsync_WhenErrorUsingConfig_ExpectHeIdentityException">
+            <summary>
+            GetAccessTokenAsync should create a request expected by Auth0.
+            </summary>
+            <returns>Task.</returns>
+        </member>
+        <member name="T:He.Identity.Mvc.UnitTests.Controllers.HeIdentityControllerTests">
+            <summary>
+            HeIdentityController Unit Tests.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Controllers.HeIdentityControllerTests.VerifyEmailTest">
+            <summary>
+            Ensure VerifyEmail returns view model.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Controllers.HeIdentityControllerTests.VerifyEmailNotPresentRedirectsHomeTest">
+            <summary>
+            Verifies email is not present redirects Home.
+            </summary>
+        </member>
+        <member name="T:He.Identity.Mvc.UnitTests.Handlers.MockCookieValidatePrincipalContextFacade">
+            <summary>
+            MockCookieValidatePrincipalContextFacade.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Handlers.MockCookieValidatePrincipalContextFacade.#ctor(System.Boolean,System.String,System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:He.Identity.Mvc.UnitTests.Handlers.MockCookieValidatePrincipalContextFacade"/> class.
+            </summary>
+            <param name="userIsAuthenticated">userIsAuthenticated.</param>
+            <param name="requestPathValue">RrequestPathValue.</param>
+            <param name="refreshToken">refreshToken.</param>
+            <param name="idToken">idToken.</param>
+            <param name="accessTokenExpiresAt">expiresAt.</param>
+        </member>
+        <member name="P:He.Identity.Mvc.UnitTests.Handlers.MockCookieValidatePrincipalContextFacade.UserIsAuthenticated">
+            <inheritdoc/>
+        </member>
+        <member name="P:He.Identity.Mvc.UnitTests.Handlers.MockCookieValidatePrincipalContextFacade.RequestPathValue">
+            <inheritdoc/>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Handlers.MockCookieValidatePrincipalContextFacade.GetToken(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Handlers.MockCookieValidatePrincipalContextFacade.UpdateToken(System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Handlers.MockCookieValidatePrincipalContextFacade.RejectPrincipal">
+            <inheritdoc/>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Handlers.MockCookieValidatePrincipalContextFacade.ShouldRenew">
+            <inheritdoc/>
+        </member>
+        <member name="T:He.Identity.Mvc.UnitTests.Handlers.RevokeRefreshTokenHandlerTests">
+            <summary>
+            HttpContextExtensions Tests.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Handlers.RevokeRefreshTokenHandlerTests.RevokeRefreshTokenAsync_WhenHaveRefreshToken_ShouldPostToRevokeEndpoint">
+            <summary>
+            RevokeRefreshTokenAsync should create a valid url.
+            </summary>
+            <returns>Task.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Handlers.RevokeRefreshTokenHandlerTests.RevokeRefreshTokenAsync_WhenNoRefreshToken_ShouldNotPostToRevokeEndpoint">
+            <summary>
+            RevokeRefreshTokenAsync should create a valid url.
+            </summary>
+            <returns>Task.</returns>
+        </member>
+        <member name="T:He.Identity.Mvc.UnitTests.Handlers.TokenRefreshHandlerTests">
+            <summary>
+            CookieValidatePrincipalContextExtensions Tests.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Handlers.TokenRefreshHandlerTests.ShouldRefreshTokensIfTheyAreAboutToExpire(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Tokens should get refreshed.
+            </summary>
+            <param name="nowOffsetFromIdTokenExpiry">how many seconds from the IdToken should 'now' be.</param>
+            <param name="accessTokensOffsetFromIdTokenExpiry">how many seconds from the IdToken should the access_token expiry be.</param>
+            <param name="shoudlRefresh">Give the times should we be making  acall to refresh the tokens.</param>
+            <returns>Task.</returns>
+            <remarks>As the OIDC token contains the exp date and is encoded then it's simpler to specify 'now' and the access_token expiry date in terms of offsets from the OIDC token expiry date.</remarks>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Handlers.TokenRefreshHandlerTests.ShouldRejectPrincipalIfFailedToRefreshTokens">
+            <summary>
+            If the tokens fail to refresh then the principal should be rejected.
+            </summary>
+            <returns>Task.</returns>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.Handlers.TokenRefreshHandlerTests.ShouldNotAttemptToRefreshTokenIfNotNeeded(System.Boolean,System.String)">
+            <summary>
+            If the user is not logged in then we shouldn't attempt to refresh the tokens.
+            </summary>
+            <param name="userIsAuthenticated">Is the user authenticated.</param>
+            <param name="requestPathValue">The path of the endpoint being requested.</param>
+            <returns>Task.</returns>
+        </member>
+        <member name="T:He.Identity.Mvc.UnitTests.HeIdentityExtensionsTests">
+            <summary>
+            HeIdentityExtensions Tests.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.HeIdentityExtensionsTests.AddHeIdentityJwtBearerAuth_MissingConfiguration_ExpectException(System.String,System.String)">
+            <summary>
+            Ensure configuration is specified.
+            </summary>
+            <param name="domain">The domain.</param>
+            <param name="audience">Thre audience.</param>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.HeIdentityExtensionsTests.AddHeIdentityCookieAuth_MissingConfiguration_ExpectException(System.String,System.String,System.String)">
+            <summary>
+            Ensure configuration is specified.
+            </summary>
+            <param name="domain">The domain.</param>
+            <param name="clientId">The clientId.</param>
+            <param name="clientSecret">The clientSecret.</param>
+        </member>
+        <member name="T:He.Identity.Mvc.UnitTests.TagHelpers.HeIdentitySigninTagHelperTests">
+            <summary>
+            HeIdentitySigninTagHelper Unit Tests.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.TagHelpers.HeIdentitySigninTagHelperTests.Process_WhenUserIsSignedIn_ExpectSignoutLink_and_ManageAccountLink">
+            <summary>
+            Process method. When a user is signed in then show a sign out link and the manage account link.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.TagHelpers.HeIdentitySigninTagHelperTests.Process_WhenUserIsSignedInAndManageAccountUrlNotConfigured_ExpectSignoutLink_and_ManageAccountLink">
+            <summary>
+            Process method. When a user is signed in and the manageAccountUrl is not configured then show a sign out link and NOT the manage account link.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.TagHelpers.HeIdentitySigninTagHelperTests.Process_WhenUserIsSignedOut_ExpectSigninLink">
+            <summary>
+            Process method. When a user is signed out then show a signin link.
+            </summary>
+        </member>
+        <member name="M:He.Identity.Mvc.UnitTests.TagHelpers.HeIdentitySigninTagHelperTests.Process_WhenHeIdentityController_ExpectNoLink">
+            <summary>
+            Process method. When the controller is HeIdentityController then don't show a link.
+            </summary>
+        </member>
+    </members>
+</doc>

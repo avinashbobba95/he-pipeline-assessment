@@ -28,16 +28,11 @@ using Elsa.Server.Helpers;
 using Elsa.Server.Providers;
 using Elsa.Server.Services;
 using Elsa.Server.StartupTasks;
-using He.Identity.Auth0;
-using He.Identity.Mvc;
 using He.PipelineAssessment.Data.Auth;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 var elsaConnectionString = builder.Configuration.GetConnectionString("Elsa");
@@ -123,7 +118,6 @@ if (builder.Environment.IsDevelopment())
 }
 
 builder.Services.AddScoped<IIdentityClient, IdentityClient>();
-builder.Services.AddTransient<BearerTokenHandler>();
 
 builder.Services.AddOptions<IdentityClientConfig>()
 .Configure<IConfiguration>((settings, configuration) =>

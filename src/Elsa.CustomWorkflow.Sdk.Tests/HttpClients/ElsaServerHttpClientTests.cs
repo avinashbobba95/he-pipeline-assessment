@@ -296,7 +296,8 @@ namespace Elsa.CustomWorkflow.Sdk.Tests.HttpClients
           [Frozen] Mock<HttpMessageHandler> httpMessageHandlerMock,
           string elsaServer,
           WorkflowNextActivityDataDto workflowNextActivityDataDto,
-          ElsaServerHttpClient sut)
+          ElsaServerHttpClient sut,
+          string cookie)
         {
             //Arrange
             HttpClientTestHelpers.SetupHttpClientWithExpectedStatusCode(workflowNextActivityDataDto,
@@ -305,7 +306,7 @@ namespace Elsa.CustomWorkflow.Sdk.Tests.HttpClients
                 httpMessageHandlerMock);
 
             //Act
-            var result = await sut.LoadCustomActivities(elsaServer);
+            var result = await sut.LoadCustomActivities(elsaServer, cookie);
 
             //Assert
             Assert.NotNull(result);

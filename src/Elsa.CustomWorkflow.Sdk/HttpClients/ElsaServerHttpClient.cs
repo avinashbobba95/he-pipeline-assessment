@@ -1,6 +1,8 @@
 ﻿using Elsa.CustomWorkflow.Sdk.Models.Workflow;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -15,7 +17,7 @@ namespace Elsa.CustomWorkflow.Sdk.HttpClients
         Task<WorkflowActivityDataDto?> LoadQuestionScreen(LoadWorkflowActivityDto model);
         Task<WorkflowActivityDataDto?> LoadCheckYourAnswersScreen(LoadWorkflowActivityDto model);
         Task<WorkflowActivityDataDto?> LoadConfirmationScreen(LoadWorkflowActivityDto model);
-        Task<string?> LoadCustomActivities(string elsaServer);
+        Task<string?> LoadCustomActivities(string elsaServer, string cookies);
     }
 
     public class ElsaServerHttpClient : IElsaServerHttpClient
@@ -181,13 +183,19 @@ namespace Elsa.CustomWorkflow.Sdk.HttpClients
             return JsonSerializer.Deserialize<WorkflowActivityDataDto>(data, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<string?> LoadCustomActivities(string elsaServer)
+        public async Task<string?> LoadCustomActivities(string elsaServer, string auhCookieHeader)
         {
             string data;
             string fullUri = $"{elsaServer}/activities/properties";
-            var client = _httpClientFactory.CreateClient();
+
+            var client = _httpClientFactory.CreateClient("ElsaServerClient");
+
+            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, fullUri);
+            message.Headers.Add("Cookie", auhCookieHeader);
+
+
             using (var response = await client
-                       .GetAsync(fullUri)
+                       .SendAsync(message)
                        .ConfigureAwait(false))
             {
                 data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);

@@ -1,6 +1,10 @@
-﻿using He.Identity.Auth0;
-using He.Identity.Mvc;
+﻿//using He.Identity.Auth0;
+//using He.Identity.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using He.Identity.Mvc;
+using He.Identity.Auth0;
 
 namespace Elsa.Server.Extensions
 {
@@ -36,7 +40,8 @@ namespace Elsa.Server.Extensions
 
             var mvcBuilder = builder.Services.AddControllersWithViews().AddHeIdentityCookieAuth(heIdentityConfiguration, env);
 
-            builder.Services.AddSingleton<HttpClient>();
+            builder.Services.AddSingleton((HeIdentityConfiguration)heIdentityConfiguration);
+
             builder.Services.ConfigureIdentityManagementService(x => x.UseAuth0(auth0Config, auth0ManagementConfig));
 
             builder.Services.ConfigureHeCookieSettings(mvcBuilder,

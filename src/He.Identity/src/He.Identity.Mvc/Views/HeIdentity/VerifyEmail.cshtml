@@ -1,0 +1,37 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model He.Identity.Mvc.ViewModels.VerifyEmailViewModel
+
+@{
+    ViewData["Title"] = "Email Not Verified";
+    var signInUrl = Url.Action("SignIn", "HeIdentity");
+    var reEnterEmailUrl = Url.Action("SignOut", "HeIdentity", new { redirectUri = signInUrl });
+    var header = Model.Attempt < 2 ? "We've sent you an email" : "We've resent your email";
+    var sent = Model.Attempt < 2 ? "sent" : "re-sent";
+}
+
+<div class="govuk-width-container">
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">@header</h1>
+
+            <p class="govuk-body">We've @sent an email to @Model.EmailtoVerify.</p>
+            <p class="govuk-body">Check your junk mail folder if you can't see it in a few minutes.</p>
+
+            <p class="govuk-body">If you do not get the email:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>ask us to re-send it and we will then send you another email</li>
+                <li><a class="govuk-link govuk-link--no-visited-state" href="@reEnterEmailUrl">re-enter your email</a> if it is incorrect</li>
+                <li>email us: <a class="govuk-link govuk-link--no-visited-state" href="mailto:@Model.SupportEmail">@Model.SupportEmail</a></li>
+            </ul>
+
+            <form asp-controller="HeIdentity" asp-action="ResendVerificationEmail" asp-method="post" novalidate>
+                @Html.Hidden("email", Model.EmailtoVerify)
+                @Html.HiddenFor(x => x.Attempt)
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">Re-send email</button>
+            </form>
+        </div>
+    </div>
+</div>
