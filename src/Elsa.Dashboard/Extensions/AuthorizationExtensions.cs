@@ -1,4 +1,4 @@
-namespace Elsa.CustomInfrastructure.Extensions
+namespace Elsa.Dashboard.Extensions
 {
   using Elsa.Dashboard.Authorization;
   using He.Identity.Auth0;
@@ -24,7 +24,8 @@ namespace Elsa.CustomInfrastructure.Extensions
         Domain = auth0Config.Domain,
         ClientId = auth0Config.ClientId,
         ClientSecret = auth0Config.ClientSecret,
-        SupportEmail = supportEmail
+        SupportEmail = supportEmail,
+        CallbackPath = "/signin-oidc"
       };
 
       var auth0ManagementConfig = new Auth0ManagementConfig(
