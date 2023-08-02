@@ -1,4 +1,4 @@
-﻿@model List<He.PipelineAssessment.Models.ViewModels.AssessmentDataViewModel>
+﻿@*@model List<He.PipelineAssessment.Models.ViewModels.AssessmentDataViewModel>*@
 
 <div class="text-center">
     <div class="govuk-grid-row">
@@ -27,7 +27,7 @@
                 <th scope="col" class="govuk-table__header" data-searchable="true">Status</th>
             </tr>
         </thead>
-        <tbody class="govuk-table__body">
+@*        <tbody class="govuk-table__body">
             @foreach (var assessment in Model)
             {
                 var lastModifiedDate = assessment.LastModifiedDateTime.HasValue ? assessment.LastModifiedDateTime.Value.Date.ToString("yyyyMMdd") : "";
@@ -45,7 +45,7 @@
                     <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--@assessment.StatusDisplayTag()">@assessment.Status</strong></td>
                 </tr>
             }
-        </tbody>
+        </tbody>*@
 
     </table>
 </div>

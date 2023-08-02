@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model List<He.PipelineAssessment.Models.ViewModels.AssessmentDataViewModel>
+@*@model List<He.PipelineAssessment.Models.ViewModels.AssessmentDataViewModel>*@
 @inject NonceConfig nonceConfig
 
 @{
@@ -28,13 +28,13 @@
 </div>
 
 <br />
-@await Html.PartialAsync("_AssessmentListTable",Model)
+@await Html.PartialAsync("_AssessmentListTable")
 @section Scripts
     {
     <script nonce="@nonceConfig.DataTablesSetup" src="~/js/gov_dataTable.js"></script>
     <script nonce="@nonceConfig.DataTablesSetup">
         $(document).ready(function () {
-            initDataTable('assessmentListTable', 3, "search-div")
+            initAssessmentListDataTable('assessmentListTable', 3, "search-div")
         });
     </script>
 }

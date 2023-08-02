@@ -1,4 +1,6 @@
-﻿using He.PipelineAssessment.UI.Authorization;
+﻿using He.PipelineAssessment.Data.SinglePipeline;
+using He.PipelineAssessment.Infrastructure.Migrations;
+using He.PipelineAssessment.UI.Authorization;
 using He.PipelineAssessment.UI.Features.Assessment.AssessmentList;
 using He.PipelineAssessment.UI.Features.Assessment.AssessmentSummary;
 using He.PipelineAssessment.UI.Features.Assessment.TestAssessmentSummary;
@@ -6,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 
 namespace He.PipelineAssessment.UI.Features.Assessments
 {
@@ -25,10 +28,52 @@ namespace He.PipelineAssessment.UI.Features.Assessments
         }
 
         [Authorize(Policy = Constants.AuthorizationPolicies.AssignmentToPipelineViewAssessmentRoleRequired)]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
+           // var listModel = await _mediator.Send(new AssessmentListCommand());
+            return View("Index");
+        }
+
+        [Authorize(Policy = Constants.AuthorizationPolicies.AssignmentToPipelineViewAssessmentRoleRequired)]
+        [HttpPost]
+        public async Task<IActionResult> GetAssessmentList()
+        {
+            //ERROR HANDLING TO DO 
+            var draw = Request.Form["draw"].FirstOrDefault();
+            var start = Request.Form["start"].FirstOrDefault();
+            var length = Request.Form["length"].FirstOrDefault();
+            var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+            var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+            var searchValue = Request.Form["search[value]"].FirstOrDefault();
+            int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            int skip = start != null ? Convert.ToInt32(start) : 0;
+            int recordsTotal = 0;
+
             var listModel = await _mediator.Send(new AssessmentListCommand());
-            return View("Index", listModel);
+
+            // SEARCH AND ORDER BY TO DO 
+            recordsTotal = listModel.Count();
+            var data = listModel.Skip(skip).Take(pageSize).ToList();
+            data.Select(x=> new { 
+                SpId = x.SpId,
+                SiteName = x.SiteName,
+                Counterparty = x.Counterparty,
+                LocalAuthority= x.LocalAuthority,
+                FundingAskCurrency = x.FundingAskCurrency,
+                NumberOfHomesFormatted = x.NumberOfHomesFormatted,
+                ProjectManager = x.ProjectManager,
+                LastModifiedDateTime = x.LastModifiedDateTime,
+                StatusDisplayTag = x.StatusDisplayTag(),
+
+            });
+
+            return Ok(new
+            {
+                draw = draw,
+                recordsTotal = recordsTotal,
+                recordsFiltered = recordsTotal,
+                data = data
+            });
         }
 
         [Authorize(Policy = Constants.AuthorizationPolicies.AssignmentToPipelineViewAssessmentRoleRequired)]
