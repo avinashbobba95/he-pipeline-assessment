@@ -40,6 +40,7 @@ namespace Elsa.Server.Extensions
                 try
                 {
                     options
+                        .UseRedisCacheSignal()
                         .ConfigureDistributedLockProvider(o => o.UseRedisLockProvider());
                     return options;
                 }
