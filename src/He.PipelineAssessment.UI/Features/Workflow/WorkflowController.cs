@@ -18,14 +18,12 @@ namespace He.PipelineAssessment.UI.Features.Workflow
     {
         private readonly ILogger<WorkflowController> _logger;
         private readonly IMediator _mediator;
-        private readonly IValidator<QuestionScreenSaveAndContinueCommand> _validator;
 
 
-        public WorkflowController(IValidator<QuestionScreenSaveAndContinueCommand> validator, ILogger<WorkflowController> logger, IMediator mediator)
+        public WorkflowController(ILogger<WorkflowController> logger, IMediator mediator)
         {
             _logger = logger;
             _mediator = mediator;
-            _validator = validator;
         }
 
         [Authorize(Policy = Authorization.Constants.AuthorizationPolicies.AssignmentToWorkflowExecuteRoleRequired)]
@@ -174,12 +172,9 @@ namespace He.PipelineAssessment.UI.Features.Workflow
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> QuestionScreenSaveAndContinue([FromForm] QuestionScreenSaveAndContinueCommand command)
         {
-
-            var validationResult = _validator.Validate(command);
-            if (validationResult.IsValid)
+            var result = await this._mediator.Send(command);
+            if (result.IsValid)
             {
-                var result = await this._mediator.Send(command);
-
                 if (result.IsAuthorised)
                 {
 
@@ -199,7 +194,7 @@ namespace He.PipelineAssessment.UI.Features.Workflow
             }
             else
             {
-                command.ValidationMessages = validationResult;
+                command.ValidationMessages = result.ValidationMessages;
 
                 return View("SaveAndContinue", command);
             }
