@@ -91,7 +91,7 @@ var domain = builder.Configuration["Auth0Config:Domain"];
 var clientId = builder.Configuration["Auth0Config:MachineToMachineClientId"];
 var clientSecret = builder.Configuration["Auth0Config:MachineToMachineClientSecret"];
 var apiIdentifier = builder.Configuration["Auth0Config:Audience"];
-var tokenService = new TokenProvider(domain, clientId, clientSecret, apiIdentifier);
+var tokenService = new TokenProvider(domain, clientId, clientSecret, apiIdentifier, TokenProviderKeys.ElsaServer);
 builder.Services.AddSingleton<ITokenProvider>(tokenService);
 
 //Validators

@@ -32,12 +32,25 @@ builder.Services.Configure<Urls>(
 builder.Services.Configure<Auth0Config>(
   builder.Configuration.GetSection("Auth0Config"));
 
+Dictionary<string, TokenConfig> tokenProviderConfig = new Dictionary<string, TokenConfig>();
+
 var domain = builder.Configuration["Auth0Config:Domain"];
 var clientId = builder.Configuration["Auth0Config:MachineToMachineClientId"];
 var clientSecret = builder.Configuration["Auth0Config:MachineToMachineClientSecret"];
 var audience = builder.Configuration["Auth0Config:Audience"];
-var tokenService = new TokenProvider(domain, clientId, clientSecret, audience);
-builder.Services.AddSingleton<ITokenProvider>(tokenService);
+var pipelineDomain = builder.Configuration["PipelineAuth0Config:Domain"];
+var pipelineClientId = builder.Configuration["PipelineAuth0Config:MachineToMachineClientId"];
+var pipelineClientSecret = builder.Configuration["PipelineAuth0Config:MachineToMachineClientSecret"];
+var pipelineAudience = builder.Configuration["PipelineAuth0Config:Audience"];
+var serviceConfig = new TokenConfig(domain, clientId, clientSecret, audience);
+var pipelineConfig = new TokenConfig(pipelineDomain, pipelineClientId, pipelineClientSecret, pipelineAudience);
+
+tokenProviderConfig.Add(TokenProviderKeys.ElsaServer, serviceConfig);
+tokenProviderConfig.Add(TokenProviderKeys.Pipeline, serviceConfig);
+
+TokenProvider provider = new TokenProvider(tokenProviderConfig);
+
+builder.Services.AddSingleton<ITokenProvider>(provider);
 
 
 string serverURl = builder.Configuration["Urls:ElsaServer"];
@@ -46,8 +59,15 @@ builder.Services.AddHttpClient("ElsaServerClient", client =>
   client.BaseAddress = new Uri(serverURl);
 });
 
+string pipelineUrl = builder.Configuration["Urls:Pipeline"];
+builder.Services.AddHttpClient("PipelineClient", client =>
+{
+  client.BaseAddress = new Uri(pipelineUrl);
+});
+
 
 builder.Services.AddScoped<IElsaServerHttpClient, ElsaServerHttpClient>();
+builder.Services.AddScoped<IPipelineAssessmentHttpClient, PipelineAssessmentHttpClient>();
 
 // For Authentication
 builder.AddCustomAuth0Configuration();

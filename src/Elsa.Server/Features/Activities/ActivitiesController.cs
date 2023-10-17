@@ -1,6 +1,7 @@
 ﻿using Elsa.CustomActivities.Describers;
 using Elsa.Server.Features.Activities.CustomActivityProperties;
 using Elsa.Server.Features.Activities.DataDictionary;
+using Elsa.Server.Features.Activities.WorkflowDictionary;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,21 @@ namespace Elsa.Server.Features.Activities
             try
             {
                 string results = await _mediator.Send(new DataDictionaryCommand());
+                return Ok(results);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e);
+            }
+        }
+
+        [HttpGet("workflows")]
+        public async Task<IActionResult> GetWorkflowDictionary()
+        {
+            try
+            {
+                string results = await _mediator.Send(new WorkflowDictionaryCommand());
                 return Ok(results);
 
             }

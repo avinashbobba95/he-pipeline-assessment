@@ -21,6 +21,7 @@ namespace Elsa.CustomWorkflow.Sdk.HttpClients
         Task<WorkflowActivityDataDto?> LoadConfirmationScreen(LoadWorkflowActivityDto model);
         Task<string?> LoadCustomActivities(string elsaServer);
         Task<string?> LoadDataDictionary(string elsaServer);
+        Task<string?> LoadWorkflowDictionary(string elsaServer);
         Task PostArchiveQuestions(string[] workflowInstanceIds);
     }
 
@@ -307,6 +308,29 @@ namespace Elsa.CustomWorkflow.Sdk.HttpClients
             return data;
         }
 
+        public async Task<string?> LoadWorkflowDictionary(string elsaServer)
+        {
+            string data;
+            string fullUri = $"{elsaServer}/activities/workflows" + "?t=" + DateTime.UtcNow.Ticks;
+            var client = _httpClientFactory.CreateClient("ElsaServerClient");
+            AddAccessTokenToRequest(client);
+            using (var response = await client
+                       .GetAsync(fullUri)
+                       .ConfigureAwait(false))
+            {
+                data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogError($"StatusCode='{response.StatusCode}'," +
+                                     $"\n Message= '{data}'," +
+                                     $"\n Url='{fullUri}'");
+
+                    return default;
+                }
+            }
+            return data;
+        }
+
         public async Task PostArchiveQuestions(string[] workflowInstanceIds)
         {
             var relativeUri = "workflow/archivequestions" + "?t=" + DateTime.UtcNow.Ticks;
@@ -347,7 +371,7 @@ namespace Elsa.CustomWorkflow.Sdk.HttpClients
         {
             try
             {
-                var token = _tokenProvider.GetToken(true);
+                var token = _tokenProvider.GetToken(true, TokenProviderKeys.Pipeline);
                 if (token != null)
                 {
                     return token.AccessToken;

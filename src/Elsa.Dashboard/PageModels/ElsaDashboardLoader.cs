@@ -13,8 +13,10 @@ namespace Elsa.Dashboard.PageModels
   public class ElsaDashboardLoader : PageModel
   {
     public string _serverUrl { get; set; }
+    public string _pipelineUrl { get; set; }
     private Auth0Config _auth0Options { get; set; }
     private IElsaServerHttpClient _client { get; set; }
+    private IPipelineAssessmentHttpClient _pipelineClient { get; set; }
 
     private ILogger<ElsaDashboardLoader> _logger { get; set; }
     public string? StoreConfig { get; set; }
@@ -22,22 +24,26 @@ namespace Elsa.Dashboard.PageModels
     public string? JsonResponse { get; set; }
 
     public string? DictionaryResponse { get; set; }
+    public string? WorkflowResponse { get; set; }
 
-    public ElsaDashboardLoader(IElsaServerHttpClient client, IOptions<Urls> options, ILogger<ElsaDashboardLoader> logger, IOptions<Auth0Config> auth0Options)
+    public ElsaDashboardLoader(IElsaServerHttpClient client, IPipelineAssessmentHttpClient pipelineClient, IOptions<Urls> options, ILogger<ElsaDashboardLoader> logger, IOptions<Auth0Config> auth0Options)
     {
       _auth0Options = auth0Options.Value;
       _serverUrl = options.Value.ElsaServer ?? string.Empty;
+      _pipelineUrl = options.Value.Pipeline ?? string.Empty;
       _client = client;
+      _pipelineClient = pipelineClient;
       _logger = logger;
     }
 
     public async Task OnGetAsync()
-
     {
+
       if (!string.IsNullOrEmpty(_serverUrl))
       {
         JsonResponse = await _client.LoadCustomActivities(_serverUrl);
         DictionaryResponse = await _client.LoadDataDictionary(_serverUrl);
+        WorkflowResponse = await _pipelineClient.LoadWorkflowDictionary(_pipelineUrl);
         StoreConfig = SetStoreConfig();
 
       }

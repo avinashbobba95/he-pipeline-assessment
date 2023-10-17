@@ -41,6 +41,14 @@ namespace He.PipelineAssessment.UI.Features.Admin
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Workflows()
+        {
+            var assessmentTools = await _mediator.Send(new AssessmentToolQuery());
+
+            return View("AssessmentTool", assessmentTools);
+        }
+
         //Get all assessment-tools 
         [HttpGet]
         public async Task<IActionResult> AssessmentTool()
