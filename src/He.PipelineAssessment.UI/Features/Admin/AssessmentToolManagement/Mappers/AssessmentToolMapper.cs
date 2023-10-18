@@ -1,5 +1,8 @@
 ﻿using He.PipelineAssessment.Models;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.CreateAssessmentTool;
+using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.CreateAssessmentToolCategory;
+using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Queries.GetAssessmentToolCategories;
+using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Queries.GetAssessmentToolCategoriesForAssessmentTool;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Queries.GetAssessmentTools;
 
 namespace He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Mappers
@@ -8,8 +11,11 @@ namespace He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Mappe
     {
         AssessmentToolListData AssessmentToolsToAssessmentToolData(List<AssessmentTool> assessmentTools);
         AssessmentTool CreateAssessmentToolCommandToAssessmentTool(CreateAssessmentToolCommand createAssessmentToolCommand);
+        AssessmentToolCategory CreateAssessmentToolCategoryCommandToAssessmentToolCategory(CreateAssessmentToolCategoryCommand createAssessmentToolCategoryCommand);
 
         List<Queries.GetAssessmentToolWorkflows.AssessmentToolWorkflowDto> AssessmentToolWorkflowsToAssessmentToolDto(List<AssessmentToolWorkflow> toList);
+        AssessmentToolCategoryListData AssessmentToolCategoriesToAssessmentToolCategoryData(List<AssessmentToolCategory> assessmentToolCategories);
+        AssessmentToolCategoryForAssessmentToolListData AssessmentToolCategoriesForAssessmentToolToAssessmentToolCategoryForAssessmentToolData(List<AssessmentToolCategory> assessmentToolCategories);
     }
     public class AssessmentToolMapper : IAssessmentToolMapper
     {
@@ -62,6 +68,38 @@ namespace He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Mappe
                     Version = x.Version,
                     WorkflowDefinitionId = x.WorkflowDefinitionId
                 }).ToList();
+        }
+
+        public AssessmentToolCategory CreateAssessmentToolCategoryCommandToAssessmentToolCategory(CreateAssessmentToolCategoryCommand createAssessmentToolCategoryCommand)
+        {
+            return new AssessmentToolCategory
+            {
+                Name = createAssessmentToolCategoryCommand.Name,
+            };
+        }
+
+        public AssessmentToolCategoryListData AssessmentToolCategoriesToAssessmentToolCategoryData(List<AssessmentToolCategory> assessmentToolCategories)
+        {
+            return new AssessmentToolCategoryListData
+            {
+                AssessmentToolCategories = assessmentToolCategories.Select(x => new AssessmentToolCategoryDto
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToList()
+            };
+        }
+
+        public AssessmentToolCategoryForAssessmentToolListData AssessmentToolCategoriesForAssessmentToolToAssessmentToolCategoryForAssessmentToolData(List<AssessmentToolCategory> assessmentToolCategories)
+        {
+            return new AssessmentToolCategoryForAssessmentToolListData
+            {
+                AssessmentToolCategories = assessmentToolCategories.Select(x => new AssessmentToolCategoryForAssessmentToolDto
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToList()
+            };
         }
     }
 

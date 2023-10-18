@@ -1,0 +1,74 @@
+﻿@using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Queries.GetAssessmentToolCategoriesForAssessmentTool;
+@model AssessmentToolCategoryForAssessmentToolListData;
+
+@{
+    var title = "Categories for Assessment Tool - " + Model.AssessmentToolName;
+    ViewData["Title"] = "Create Category for Assessment Tool - " + Model.AssessmentToolName;
+    Layout = "_Layout";
+ }
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        @Html.ActionLink("Back","Index","Assessment", null,new{ @class="govuk-back-link"})
+    </div>
+    <div class="govuk-grid-column-one-third pull-right">
+        <label for="createAssessmentTool" hidden="hidden">Back: </label>
+        @Html.ActionLink("Add Category", "LoadAddAssessmentToolCategory","Admin", null, new {@class = "govuk-link"})
+    </div>
+</div>
+
+<div class="text-center">
+    <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--m">@title</caption>
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Name</th>
+                <th scope="col" class="govuk-table__header">Update</th>
+                <th scope="col" class="govuk-table__header">Remove</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            @{
+                int iterrator = 0;
+
+                @foreach (var assessmentToolCategory in Model.AssessmentToolCategories)
+                {
+                    iterrator++;
+                    var nameErrorClass = "";
+                    var errorFormClass = "";
+                                        <tr class="govuk-table__row @errorFormClass">
+                        @using (Html.BeginForm("UpdateAssessmentTool", "Admin", FormMethod.Post))
+                        {
+                            <td class="govuk-table__cell">
+                            <div class="govuk-form-group">
+                            @{
+                                var labelId = "Name" + iterrator;
+                                <label hidden id=@labelId>"Row: @iterrator column: name"</label>
+                                <input type="text" value="@assessmentToolCategory.Name" name="UpdateAssessmentToolCommand.Name" class="govuk-input @nameErrorClass" aria-labelledBy="@labelId" />
+                             }
+                             </div>
+                             </td>
+                             <td class="govuk-table__cell">
+                             @{
+                                var hiddenId = "hidden" + iterrator;
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("UpdateAssessmentToolCommand.Id", assessmentToolCategory.Id,new { @id=@hiddenId})
+
+                                var updateId = "Update" + iterrator;
+                                <input class="govuk-button govuk-!-margin-0" data-module="govuk-button" id="@updateId" type="submit" value="Update" />
+                            }
+                            </td>
+                        }
+                        <td class="govuk-table__cell">
+                        @Html.ActionLink("Remove", "GetAssessmentToolCategoryById", "Admin", new { assessmentToolCategoryId = assessmentToolCategory.Id })
+                        </td>
+                                <td class="govuk-table__cell">
+                                    
+                            @Html.ActionLink("Manage Assessment Tools", "AssessmentTool", "Admin", new { assessmentToolCategoryName = assessmentToolCategory.Name })
+                                </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

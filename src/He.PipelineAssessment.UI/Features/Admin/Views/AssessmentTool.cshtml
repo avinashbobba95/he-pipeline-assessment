@@ -11,8 +11,12 @@
         @Html.ActionLink("Back","Index","Assessment", null,new{ @class="govuk-back-link"})
     </div>
     <div class="govuk-grid-column-one-third pull-right">
-        <label for="createAssessmentTool" hidden="hidden">Back: </label>
+        <label for="createAssessmentTool" hidden="hidden">createAssessmentTool: </label>
         @Html.ActionLink("Create Assessment Tool", "LoadAssessmentTool","Admin", null, new {@class = "govuk-link"})
+    </div>
+    <div class="govuk-grid-column-one-third pull-right">
+        <label for="createAssessmentToolCategory" hidden="hidden">createAssessmentToolCategory: </label>
+        @Html.ActionLink("Create Assessment Tool Category", "LoadAssessmentToolCategory","Admin", null, new {@class = "govuk-link"})
     </div>
 </div>
 <div class="text-center">
@@ -24,7 +28,7 @@
                 <th scope="col" class="govuk-table__header">Order</th>
                 <th scope="col" class="govuk-table__header">Update</th>
                 <th scope="col" class="govuk-table__header">Remove</th>
-                <th scope="col" class="govuk-table__header">Assessment Tool Workflows</th>
+                <th scope="col" class="govuk-table__header">Assessment Tool Categories</th>
             </tr>
         </thead>
         <tbody class="govuk-table__body">
@@ -100,24 +104,7 @@
                             @Html.ActionLink("Remove", "GetAssessmentToolById", "Admin", new { assessmentToolId = assessmentTool.Id })
                         </td>
                         <td class="govuk-table__cell">
-                            <table class="govuk-table" style="margin-bottom: 0">
-                                <tbody class="govuk-table__body">
-                                    @foreach (var assessmentToolWorkflow in assessmentTool.AssessmentToolWorkFlows)
-                                    {
-                                        <tr class="govuk-table__row">
-                                            <td class="govuk-table__cell">
-                                                @assessmentToolWorkflow.WorkflowDefinitionId
-                                            </td>
-                                            <td class="govuk-table__cell">
-                                                @if (assessmentToolWorkflow.IsFirstWorkflow)
-                                                {
-                                                    @:First workflow
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
-                            </table>
-                            @Html.ActionLink("Manage Assessmenttool Workflow", "AssessmentToolWorkflow", "Admin", new { assessmentToolId = assessmentTool.Id })
+                            @Html.ActionLink("Manage Assessment Tool Categories", "AssessmentToolCategory", "Admin", new {  assessmentToolName = assessmentTool.Name })
                         </td>
                     </tr>
                 }

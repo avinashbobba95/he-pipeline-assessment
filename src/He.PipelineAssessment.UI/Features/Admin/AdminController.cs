@@ -1,11 +1,15 @@
 ﻿using FluentValidation;
 using He.PipelineAssessment.UI.Authorization;
+using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.AddAssessmentToolCategory;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.CreateAssessmentTool;
+using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.CreateAssessmentToolCategory;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.CreateAssessmentToolWorkflow;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.DeleteAssessmentTool;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.DeleteAssessmentToolWorkflow;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.UpdateAssessmentTool;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.UpdateAssessmentToolWorkflowCommand;
+using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Queries.GetAssessmentToolCategories;
+using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Queries.GetAssessmentToolCategoriesForAssessmentTool;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Queries.GetAssessmentTools;
 using He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Queries.GetAssessmentToolWorkflows;
 using MediatR;
@@ -18,6 +22,7 @@ namespace He.PipelineAssessment.UI.Features.Admin
     public class AdminController : BaseController<AdminController>
     {
         private readonly IValidator<CreateAssessmentToolCommand> _createAssessmentToolCommandValidator;
+        private readonly IValidator<CreateAssessmentToolCategoryCommand> _createAssessmentToolCategoryCommandValidator;
         private readonly IValidator<UpdateAssessmentToolCommand> _updateAssessmentToolCommandValidator;
         private readonly IValidator<UpdateAssessmentToolWorkflowCommand> _updateAssessmentToolWorkflowCommandValidator;
         private readonly IValidator<CreateAssessmentToolWorkflowCommand> _createAssessmentToolWorkflowCommandValidator;
@@ -27,6 +32,7 @@ namespace He.PipelineAssessment.UI.Features.Admin
             IValidator<CreateAssessmentToolWorkflowCommand> createAssessmentToolWorkflowCommandValidator,
             IValidator<UpdateAssessmentToolCommand> updateAssessmentToolCommandValidator,
             IValidator<UpdateAssessmentToolWorkflowCommand> updateAssessmentToolWorkflowCommandValidator,
+                        IValidator<CreateAssessmentToolCategoryCommand> createAssessmentToolCategoryCommandValidator,
             IMediator mediator,
             ILogger<AdminController> logger) : base(mediator, logger)
         {
@@ -34,11 +40,28 @@ namespace He.PipelineAssessment.UI.Features.Admin
             _updateAssessmentToolCommandValidator = updateAssessmentToolCommandValidator;
             _updateAssessmentToolWorkflowCommandValidator = updateAssessmentToolWorkflowCommandValidator;
             _createAssessmentToolCommandValidator = createAssessmentToolCommandValidator;
+            _createAssessmentToolCategoryCommandValidator = createAssessmentToolCategoryCommandValidator;
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        //Get all assessment-tool-categories
+        [HttpGet]
+        public async Task<IActionResult> AssessmentToolCategory(string assessmentToolName)
+
+        { 
+            var assessmentToolCategories = await _mediator.Send(new AssessmentToolCategoryForAssessmentToolQuery() {  });
+            assessmentToolCategories.AssessmentToolName = assessmentToolName;
+            return View("AssessmentToolCategory", assessmentToolCategories);
+        }
+
+        [HttpGet]
+        public Task<IActionResult> LoadAddAssessmentToolCategory(AddAssessmentToolCategoryDataDto addAssessmentToolCategoryDto)
+        {
+            return Task.FromResult<IActionResult>(View("AddAssessmentToolCategory", addAssessmentToolCategoryDto));
         }
 
         //Get all assessment-tools 
@@ -68,9 +91,22 @@ namespace He.PipelineAssessment.UI.Features.Admin
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAssessmentToolCategoryById(int assessmentToolCategoryId)
+        {
+            //TO DO : delete assessment tool category
+            return Ok();
+        }
+
+        [HttpGet]
         public Task<IActionResult> LoadAssessmentTool(CreateAssessmentToolDto createAssessmentToolDto)
         {
             return Task.FromResult<IActionResult>(View("LoadAssessmentTool", createAssessmentToolDto));
+        }
+
+        [HttpGet]
+        public Task<IActionResult> LoadAssessmentToolCategory(CreateAssessmentToolCategoryDto createAssessmentToolCategoryDto)
+        {
+            return Task.FromResult<IActionResult>(View("LoadAssessmentToolCategory", createAssessmentToolCategoryDto));
         }
 
         [HttpGet]
@@ -96,6 +132,23 @@ namespace He.PipelineAssessment.UI.Features.Admin
             }
         }
 
+        //Create an assessment tool category
+        [HttpPost]
+        public async Task<IActionResult> CreateAssessmentToolCategory(CreateAssessmentToolCategoryDto createAssessmentToolCategoryDto)
+        {
+            var validationResult = await _createAssessmentToolCategoryCommandValidator.ValidateAsync(createAssessmentToolCategoryDto.CreateAssessmentToolCategoryCommand);
+            if (validationResult.IsValid)
+            {
+                await _mediator.Send(createAssessmentToolCategoryDto.CreateAssessmentToolCategoryCommand);
+                return RedirectToAction("AssessmentTool");
+            }
+            else
+            {
+                createAssessmentToolCategoryDto.ValidationResult = validationResult;
+                return View("LoadAssessmentToolCategory", createAssessmentToolCategoryDto);
+            }
+        }
+
         //Create an assessment tool workflow
         [HttpPost]
         public async Task<IActionResult> CreateAssessmentToolWorkflow(CreateAssessmentToolWorkflowDto createAssessmentToolWorkflowDto)
@@ -111,6 +164,13 @@ namespace He.PipelineAssessment.UI.Features.Admin
                 createAssessmentToolWorkflowDto.ValidationResult = validationResult;
                 return View("LoadAssessmentToolWorkflow", createAssessmentToolWorkflowDto);
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddAssessmentToolCategory(AddAssessmentToolCategoryDataDto addCategoryDto)
+        {
+            await _mediator.Send(addCategoryDto.AddAssessmentToolCategoryCommand);
+            return RedirectToAction("AssessmentTooCategory");
         }
 
         //update an assessment tool

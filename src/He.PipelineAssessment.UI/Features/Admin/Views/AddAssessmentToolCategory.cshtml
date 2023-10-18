@@ -1,0 +1,19 @@
+﻿@model He.PipelineAssessment.UI.Features.Admin.AssessmentToolManagement.Commands.AddAssessmentToolCategory.AddAssessmentToolCategoryDataDto
+
+@{
+    ViewData["Title"] = "Assessment Tools";
+    Layout = "_Layout";
+}
+
+@Html.ActionLink("Back","AssessmentTool","Admin", null,new{ @class="govuk-back-link"})
+
+<div class="text-center">
+    @{
+        @using (Html.BeginForm("AddAssessmentToolCategory", "Admin", FormMethod.Post))
+        {
+
+                var model = Model;
+
+        }
+    }
+</div>

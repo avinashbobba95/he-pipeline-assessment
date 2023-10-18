@@ -16,6 +16,7 @@ namespace He.PipelineAssessment.Infrastructure.Repository
 
         Task<int> DeleteAssessmentTool(AssessmentTool assessmentTool);
         Task<int> SaveChanges();
+        IEnumerable<AssessmentToolCategory> GetAssessmentToolCategories();
     }
     public class AdminAssessmentToolRepository : IAdminAssessmentToolRepository
     {
@@ -65,6 +66,23 @@ namespace He.PipelineAssessment.Infrastructure.Repository
         public async Task<int> SaveChanges()
         {
             return await _context.SaveChangesAsync();
+        }
+
+        public IEnumerable<AssessmentToolCategory> GetAssessmentToolCategories()
+        {
+            return new List<AssessmentToolCategory>()
+            {
+                new AssessmentToolCategory()
+                {
+                    Id= 1,
+                    Name = "Category 1"
+                },
+                new AssessmentToolCategory()
+                {
+                    Id= 2,
+                    Name= "Category 2"
+                }
+            };
         }
     }
 }
