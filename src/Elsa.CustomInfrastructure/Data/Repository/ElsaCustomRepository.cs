@@ -72,6 +72,22 @@ namespace Elsa.CustomInfrastructure.Data.Repository
             return result;
         }
 
+        public async Task<Question?> GetQuestionByDataDictionary(int dataDictionaryId, string correlationId,
+            CancellationToken cancellationToken)
+        {
+            var result = await _dbContext.Set<Question>()
+                .Where(x =>
+                    x.CorrelationId == correlationId &&
+                    x.QuestionDataDictionaryId == dataDictionaryId &&
+                    (!x.IsArchived.HasValue || !x.IsArchived.Value))
+                .Include(x => x.Choices)!.ThenInclude(y => y.QuestionChoiceGroup)
+                .Include(x => x.Answers)
+                .OrderByDescending(x => x.CreatedDateTime)
+                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+            return result;
+        }
+
         public async Task<Question?> GetQuestionByWorkflowAndActivityName(string activityName, string workflowName, string correlationId, string questionID,
     CancellationToken cancellationToken)
         {
@@ -148,6 +164,14 @@ namespace Elsa.CustomInfrastructure.Data.Repository
             var result = await _dbContext.Set<QuestionDataDictionaryGroup>().Include(x => x.QuestionDataDictionaryList).ToListAsync(cancellationToken);
             return result;
 
+        }
+
+        public async Task<QuestionDataDictionary?> GetDataDictionaryItem(string dataDictionaryGroup, string dataDictionary)
+        {
+            var result = await _dbContext.Set<QuestionDataDictionary>()
+                .FirstOrDefaultAsync(x => x.Group.Name == dataDictionaryGroup && x.Name == dataDictionary);
+
+            return result;
         }
 
         public async Task CreateQuestionWorkflowInstance(QuestionWorkflowInstance questionWorkflowInstance, CancellationToken cancellationToken = default)

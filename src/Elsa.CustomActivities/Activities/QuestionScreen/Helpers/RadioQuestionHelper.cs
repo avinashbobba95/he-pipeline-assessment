@@ -64,6 +64,51 @@ namespace Elsa.CustomActivities.Activities.QuestionScreen.Helpers
             return result;
         }
 
+        public async Task<bool> AnswerEquals(ActivityExecutionContext activityExecutionContext, string dataDictionaryGroup, string dataDictionary, string choiceIdToCheck)
+        {
+            bool result = false;
+
+            var randomId = random.Next();
+
+            activityExecutionContext.JournalData.Add($"Running RadioQuestionAnswerEquals for choice {choiceIdToCheck}. (random id - {randomId})", $"CorrelationID: {activityExecutionContext.CorrelationId}, Data Dictionary Group: {dataDictionaryGroup}, Data Dictionary: {dataDictionary}, ChoicesToCheck: {choiceIdToCheck}");
+            _logger.LogWarning($"Running RadioQuestionAnswerEquals - CorrelationID: {activityExecutionContext.CorrelationId}, Data Dictionary Group: {dataDictionaryGroup}, Data Dictionary: {dataDictionary}, ChoicesToCheck: {choiceIdToCheck}");
+
+            var dataDictionaryItem = await _elsaCustomRepository.GetDataDictionaryItem(dataDictionaryGroup, dataDictionary);
+
+            if (dataDictionaryItem == null)
+            {
+                //throw exception? or allow returning in case there are changes to workflow definitions
+                return false;
+            }
+
+            var question = await _elsaCustomRepository.GetQuestionByDataDictionary(dataDictionaryItem.Id, activityExecutionContext.CorrelationId, CancellationToken.None);
+
+            if (question != null &&
+                        (question.QuestionType == QuestionTypeConstants.RadioQuestion || question.QuestionType == QuestionTypeConstants.PotScoreRadioQuestion || question.QuestionType == QuestionTypeConstants.WeightedRadioQuestion))
+            {
+                activityExecutionContext.JournalData.Add($"RadioQuestionAnswerEquals Question Found for choice {choiceIdToCheck}. (random id - {randomId})", $"CorrelationID: {activityExecutionContext.CorrelationId}, Data Dictionary Group: {dataDictionaryGroup}, Data Dictionary: {dataDictionary}, ChoicesToCheck: {choiceIdToCheck}, DBQuestionID: {question.Id}, DBInstanceID: {question.WorkflowInstanceId}");
+                _logger.LogWarning($"RadioQuestionAnswerEquals Question Found - CorrelationID: {activityExecutionContext.CorrelationId}, Data Dictionary Group: {dataDictionaryGroup}, Data Dictionary: {dataDictionary}, ChoicesToCheck: {choiceIdToCheck}, DBQuestionID: {question.Id}, DBInstanceID: {question.WorkflowInstanceId}");
+
+                if (question.Answers != null && question.Answers.Count == 1)
+                {
+                    var singleAnswer = question.Answers.First();
+                    activityExecutionContext.JournalData.Add($"RadioQuestionAnswerEquals Answers Found for choice {choiceIdToCheck}. (random id - {randomId})", $"CorrelationID: {activityExecutionContext.CorrelationId}, Data Dictionary Group: {dataDictionaryGroup}, Data Dictionary: {dataDictionary}, ChoicesToCheck: {choiceIdToCheck}, DBQuestionID: {question.Id}, DBInstanceID: {question.WorkflowInstanceId}, Answer: {question.Answers.First().AnswerText}, Choice: {question.Answers.First().Choice?.Identifier}");
+                    _logger.LogWarning($"RadioQuestionAnswerEquals Answers Found - CorrelationID: {activityExecutionContext.CorrelationId}, Data Dictionary Group: {dataDictionaryGroup}, Data Dictionary: {dataDictionary}, ChoicesToCheck: {choiceIdToCheck}, DBQuestionID: {question.Id}, DBInstanceID: {question.WorkflowInstanceId}, Answer: {question.Answers.First().AnswerText}, Choice: {question.Answers.First().Choice?.Identifier}");
+
+                    return choiceIdToCheck == singleAnswer.Choice?.Identifier;
+                }
+
+                return false;
+            }
+            else
+            {
+                activityExecutionContext.JournalData.Add($"RadioQuestionAnswerEquals Question NULL for choice {choiceIdToCheck}. (random id - {randomId})", $"CorrelationID: {activityExecutionContext.CorrelationId}, Data Dictionary Group: {dataDictionaryGroup}, Data Dictionary: {dataDictionary}, ChoicesToCheck: {choiceIdToCheck}");
+                _logger.LogWarning($"RadioQuestionAnswerEquals Question NULL possibly - CorrelationID: {activityExecutionContext.CorrelationId}, Data Dictionary Group: {dataDictionaryGroup}, Data Dictionary: {dataDictionary}, ChoicesToCheck: {choiceIdToCheck}");
+            }
+
+            return result;
+        }
+
         public async Task<bool> AnswerIn(string correlationId, string workflowName, string activityName, string questionId, string[] choiceIdsToCheck)
         {
             bool result = false;
