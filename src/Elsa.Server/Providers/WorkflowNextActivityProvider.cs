@@ -2,8 +2,11 @@
 using Elsa.CustomModels;
 using Elsa.CustomWorkflow.Sdk;
 using Elsa.Models;
+using Elsa.Persistence;
 using Elsa.Server.Models;
+using Elsa.Services;
 using Elsa.Services.Models;
+using MediatR;
 
 namespace Elsa.Server.Providers
 {
@@ -24,19 +27,21 @@ namespace Elsa.Server.Providers
         private readonly IWorkflowInstanceProvider _workflowInstanceProvider;
         private readonly IActivityDataProvider _activityDataProvider;
         private readonly ILogger<WorkflowNextActivityProvider> _logger;
+        private readonly IBookmarkIndexer _bookmarkIndexer;
 
         public WorkflowNextActivityProvider(
             IQuestionInvoker invoker,
             IWorkflowRegistryProvider workflowRegistryProvider,
             IWorkflowInstanceProvider workflowInstanceProvider,
             IActivityDataProvider activityDataProvider,
-            ILogger<WorkflowNextActivityProvider> logger)
+            ILogger<WorkflowNextActivityProvider> logger, IBookmarkIndexer bookmarkIndexer)
         {
             _invoker = invoker;
             _workflowRegistryProvider = workflowRegistryProvider;
             _workflowInstanceProvider = workflowInstanceProvider;
             _activityDataProvider = activityDataProvider;
             _logger = logger;
+            _bookmarkIndexer = bookmarkIndexer;
         }
 
         public async Task<WorkflowNextActivityModel> GetNextActivity(string commandActivityId, string workflowInstanceId,
@@ -60,6 +65,11 @@ namespace Elsa.Server.Providers
 
                 if (!collectedWorkflows.Any())
                 {
+                    //this might mean we have undrafted the workflow
+                    if (dbAssessmentQuestionList != null && dbAssessmentQuestionList.Any())
+                    {
+                        await _bookmarkIndexer.IndexBookmarksAsync(workflowInstance, cancellationToken);
+                    }
                     throw new Exception(
                         $"Unable to progress workflow. Workflow status is: {workflowInstance.WorkflowStatus}");
                 }
