@@ -46,7 +46,7 @@ var serviceConfig = new TokenConfig(domain, clientId, clientSecret, audience);
 var pipelineConfig = new TokenConfig(pipelineDomain, pipelineClientId, pipelineClientSecret, pipelineAudience);
 
 tokenProviderConfig.Add(TokenProviderKeys.ElsaServer, serviceConfig);
-tokenProviderConfig.Add(TokenProviderKeys.Pipeline, serviceConfig);
+tokenProviderConfig.Add(TokenProviderKeys.Pipeline, pipelineConfig);
 
 TokenProvider provider = new TokenProvider(tokenProviderConfig);
 

@@ -34,7 +34,7 @@ namespace Elsa.CustomWorkflow.Sdk.HttpClients
         public async Task<string?> LoadWorkflowDictionary(string pipelineUrl)
         {
             string data;
-            string fullUri = $"{pipelineUrl}/admin/workflows" + "?t=" + DateTime.UtcNow.Ticks;
+            string fullUri = $"{pipelineUrl}/workflowregistry/workflows" + "?t=" + DateTime.UtcNow.Ticks;
             var client = _httpClientFactory.CreateClient("PipelineClient");
             AddAccessTokenToRequest(client);
             using (var response = await client

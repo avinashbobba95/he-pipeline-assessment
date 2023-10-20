@@ -26,6 +26,8 @@ using He.PipelineAssessment.UI.Features.Rollback.CreateRollback;
 using He.PipelineAssessment.UI.Features.SinglePipeline.Sync;
 using He.PipelineAssessment.UI.Features.Workflow.QuestionScreenSaveAndContinue;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -128,6 +130,13 @@ builder.Services.AddSinglePipelineClient(builder.Configuration, builder.Environm
 
 builder.AddCustomAuth0Configuration();
 builder.Services.AddCustomAuthentication();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Audience = builder.Configuration["Auth0Config:APIAudience"];
+        options.Authority = builder.Configuration["Auth0Config:Authority"];
+    });
 
 builder.Services.AddAntiforgery(options =>
 {

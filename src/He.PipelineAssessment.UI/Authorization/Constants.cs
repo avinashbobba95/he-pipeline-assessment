@@ -27,6 +27,8 @@
 
             public const string AssignmentToWorkflowEconomistRoleRequired = "AssignmentToWorkflowEconomistRoleRequired";
 
+            public const string JWTBearerToken = "JWTBearerToken";
+
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using He.Identity.Auth0;
 using He.Identity.Mvc;
 using He.PipelineAssessment.UI.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace He.PipelineAssessment.UI.Extensions
 {
@@ -76,8 +78,10 @@ namespace He.PipelineAssessment.UI.Extensions
                                 Constants.AppRole.PipelineAssessorDevelopment,
                                 Constants.AppRole.PipelineAdminOperations,
                                 Constants.AppRole.PipelineEconomist));
+
+                options.AddPolicy(Constants.AuthorizationPolicies.JWTBearerToken, policy => policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser());
             });
         }
     }
-
 }
