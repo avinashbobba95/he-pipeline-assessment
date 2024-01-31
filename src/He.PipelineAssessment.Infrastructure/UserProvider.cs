@@ -26,7 +26,12 @@ namespace He.PipelineAssessment.Infrastructure
             if (_httpContextAccessor.HttpContext != null)
             {
 
-                var userName = _httpContextAccessor.HttpContext.User.Identities.First().Claims.First(c => c.Type == "name").Value;
+                var identity = _httpContextAccessor.HttpContext.User.Identities.First();
+                var userName = identity.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
+                if (userName == null)
+                {
+                    userName = identity.Claims.FirstOrDefault(c => c.Type == "azp")?.Value;
+                }
                 return userName;
             }
             else

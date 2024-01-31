@@ -24,6 +24,7 @@ using He.PipelineAssessment.UI.Features.Intervention;
 using He.PipelineAssessment.UI.Features.SinglePipeline.Sync;
 using He.PipelineAssessment.UI.Features.Workflow.QuestionScreenSaveAndContinue;
 using He.PipelineAssessment.UI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -33,8 +34,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 var pipelineAssessmentConnectionString = builder.Configuration.GetConnectionString("SqlDatabase");
-
-
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -125,6 +124,13 @@ builder.Services.AddOptions<IdentityClientConfig>()
 builder.Services.AddSinglePipelineClient(builder.Configuration, builder.Environment.IsDevelopment());
 
 builder.AddCustomAuth0Configuration();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://identity-staging-homesengland.eu.auth0.com/";
+        options.Audience = "https://pipasmt-dev-01-api";
+    }); 
+
 builder.Services.AddCustomAuthentication();
 
 builder.Services.AddAntiforgery(options =>
@@ -157,6 +163,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseAuthentication();
 
 app.UseAuthorization();
@@ -164,5 +171,4 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Assessment}/{action=Index}/{id?}");
-
 app.Run();
