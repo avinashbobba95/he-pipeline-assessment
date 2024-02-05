@@ -57,23 +57,24 @@ using var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
 
 ILogger logger = loggerFactory.CreateLogger<Program>(); ;
 
-var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
-var clearCache = Convert.ToBoolean(builder.Configuration["Redis:ClearCache"]);
-if (!builder.Environment.IsDevelopment())
-{
-    logger.LogInformation("Attempting to set up Redis Connection.  Environment is not Development");
-    await builder.Services.AddRedisWithSelfSignedSslCertificate(redisConnectionString!, builder.Configuration["Redis:SslCertificatePath"], builder.Configuration["Redis:SslCertificateKeyPath"], logger, clearCache );
-}
-else
-{
-    var redisConfiguration = builder.Configuration["Redis:Configuration"];
-    if (!string.IsNullOrEmpty(redisConfiguration))
-    {
-        await builder.Services.AddRedisLocal(redisConfiguration, logger, clearCache);
-    }
-}
+//var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+//var clearCache = Convert.ToBoolean(builder.Configuration["Redis:ClearCache"]);
+//if (!builder.Environment.IsDevelopment())
+//{
+//    logger.LogInformation("Attempting to set up Redis Connection.  Environment is not Development");
+//    await builder.Services.AddRedisWithSelfSignedSslCertificate(redisConnectionString!, builder.Configuration["Redis:SslCertificatePath"], builder.Configuration["Redis:SslCertificateKeyPath"], logger, clearCache );
+//}
+//else
+//{
+//    var redisConfiguration = builder.Configuration["Redis:Configuration"];
+//    if (!string.IsNullOrEmpty(redisConfiguration))
+//    {
+//        await builder.Services.AddRedisLocal(redisConfiguration, logger, clearCache);
+//    }
+//}
 
-bool useCache = (Convert.ToBoolean(builder.Configuration["Redis:UseCache"]) && !builder.Environment.IsDevelopment()) || !string.IsNullOrWhiteSpace(builder.Configuration["Redis:Configuration"]);
+//bool useCache = (Convert.ToBoolean(builder.Configuration["Redis:UseCache"]) && !builder.Environment.IsDevelopment()) || !string.IsNullOrWhiteSpace(builder.Configuration["Redis:Configuration"]);
+bool useCache = false;
 
 logger.LogInformation($"Using Cache: {useCache}");
 // Elsa services.
