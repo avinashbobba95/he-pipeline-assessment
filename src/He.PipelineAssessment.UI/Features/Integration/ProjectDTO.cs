@@ -15,6 +15,6 @@ namespace He.PipelineAssessment.UI.Features.Integration
         public int NumberOfHomes { get; set; }
         public string BusinessArea { get; set; } = string.Empty;
         public string LandType { get; set; } = string.Empty;
-        public string SensitiveStatus { get; set; }
+        public string SensitiveStatus { get; set; } = string.Empty;
     }
 }
