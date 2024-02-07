@@ -21,7 +21,7 @@ resources:
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'   
-    ref: 'master'
+    ref: 'feature/fetchdepth-test'
 
 stages:
 - template: azure-pipelines-build-and-deploy.yml@pipeline-assessment-deployment
