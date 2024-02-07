@@ -25,11 +25,7 @@ namespace He.PipelineAssessment.UI.Features.Integration
         {
             try
             {
-                var command = new CreatePipelineCommand()
-                {
-                    ProjectData = data
-                };
-
+                var command = new CreatePipelineCommand(data);
                 var result = await _mediator.Send(command);
                 return new OkResult();
             }
@@ -38,19 +34,6 @@ namespace He.PipelineAssessment.UI.Features.Integration
                 var badRequestResult = new BadRequestObjectResult(ex.Message);
                 return badRequestResult;
             }
-        }
-
-        [HttpGet]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> GetAssessments([FromBody] ProjectDTO data)
-        {
-            var command = new CreatePipelineCommand()
-            {
-                ProjectData = data
-            };
-
-            var result = await _mediator.Send(command);
-            return new OkResult();
         }
     }
 }
